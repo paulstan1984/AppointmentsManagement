@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SideBar from '../components/SideBar.vue';
+import { useAppStore } from '@/stores/appStore';
 
 export default defineComponent({
     components: {
@@ -9,24 +10,10 @@ export default defineComponent({
 
     data() {
         return {
-            count: 1
+            state: useAppStore()
         }
     },
 
-    // Methods are functions that mutate state and trigger updates.
-    // They can be bound as event listeners in templates.
-    methods: {
-        increment() {
-            this.count++
-        }
-    },
-
-    // Lifecycle hooks are called at different stages
-    // of a component's lifecycle.
-    // This function will be called when the component is mounted.
-    mounted() {
-        console.log(`The initial count is ${this.count}.`)
-    }
 })
 </script>
 
@@ -48,7 +35,7 @@ export default defineComponent({
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3" @click="state.toggleMenu">
                         <i class="fa fa-bars"></i>
                     </button>
 

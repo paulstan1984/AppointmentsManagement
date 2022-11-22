@@ -1,21 +1,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SidebarBrand from './SidebarBrand.vue';
+import SidebarBrand from '@/components/SidebarBrand.vue';
+import { useAppStore } from '@/stores/appStore';
 
 export default defineComponent({
     components: {
         SidebarBrand
     },
 
-    methods: {
-        toggleMenu: function () {
-            this.toggled = !this.toggled;
-        }
-    },
-
     data() {
         return {
-            toggled: false
+            state: useAppStore()
         }
     },
 })
@@ -23,7 +18,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <ul :class="{ toggled: toggled, 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion': true }">
+    <ul :class="{ toggled: state.menuToggled, 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion': true }">
 
         <SidebarBrand></SidebarBrand>
 
@@ -72,7 +67,7 @@ export default defineComponent({
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle" @click="toggleMenu"></button>
+            <button class="rounded-circle border-0" id="sidebarToggle" @click="state.toggleMenu"></button>
         </div>
 
         <!-- Sidebar Message -->
