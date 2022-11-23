@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SidebarBrand from '@/components/SidebarBrand.vue';
+import Logo from '@/components/Logo.vue';
 import { useAppStore } from '@/stores/appStore';
 
 export default defineComponent({
     components: {
-        SidebarBrand
+        Logo
     },
 
     data() {
@@ -20,7 +20,7 @@ export default defineComponent({
 <template>
     <ul :class="{ toggled: state.menuToggled, 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion': true }">
 
-        <SidebarBrand></SidebarBrand>
+        <Logo></Logo>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -33,7 +33,7 @@ export default defineComponent({
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-building"></i>
                 <span>Service Providers</span>
             </a>
         </li>
@@ -49,7 +49,7 @@ export default defineComponent({
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <i class="fas fa-fw fa-wrench"></i>
+                <i class="fas fa-fw fa-chair"></i>
                 <span>Phisical Resources</span>
             </a>
         </li>
@@ -57,7 +57,7 @@ export default defineComponent({
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <i class="fas fa-fw fa-folder"></i>
+                <i class="fas fa-fw fa-calendar-check"></i>
                 <span>Reservations</span>
             </a>
         </li>
