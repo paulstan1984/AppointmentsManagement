@@ -4,6 +4,7 @@ import SideBar from '@/components/SideBar/SideBar.vue';
 import TopBar from '@/components/TopBar/TopBar.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
+import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
 export default defineComponent({
     components: {
@@ -11,6 +12,16 @@ export default defineComponent({
         TopBar,
         Footer,
         ScrollTop,
+    },
+
+    data() {
+        return {
+            serviceProvidersStore: serviceProvidersStore()
+        }
+    },
+
+    mounted() {
+        this.serviceProvidersStore.fetchData();
     },
 })
 </script>

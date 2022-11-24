@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useAppStore = defineStore('appState', {
+export const appStore = defineStore('appState', {
 
   state: () => ({
     menuToggled: false,

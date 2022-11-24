@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import TopBarSearch from '@/components/TopBar/TopBarSearch.vue';
 import TopBarNav from '@/components/TopBar/TopBarNav.vue';
 
-import { useAppStore } from '@/stores/appStore';
+import { appStore } from '@/stores/appStore';
 
 export default defineComponent({
     components: {
@@ -13,7 +13,7 @@ export default defineComponent({
 
     data() {
         return {
-            state: useAppStore()
+            state: appStore()
         }
     },
 

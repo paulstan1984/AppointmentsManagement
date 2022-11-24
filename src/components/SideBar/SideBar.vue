@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Logo from '@/components/SideBar/Logo.vue';
-import { useAppStore } from '@/stores/appStore';
+import { appStore } from '@/stores/appStore';
 
 export default defineComponent({
     components: {
@@ -10,7 +10,7 @@ export default defineComponent({
 
     data() {
         return {
-            state: useAppStore()
+            state: appStore()
         }
     },
 })
