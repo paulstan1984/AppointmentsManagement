@@ -1,8 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import TopBarSearch from '@/components/TopBarSearch.vue';
-import TopBarLatestReservations from '@/components/TopBarLatestReservations.vue';
-import TopBarProfile from '@/components/TopBarProfile.vue';
+import TopBarSearch from '@/components/TopBar/TopBarSearch.vue';
+import TopBarLatestReservations from '@/components/TopBar/TopBarLatestReservations.vue';
+import TopBarProfile from '@/components/TopBar/TopBarProfile.vue';
 
 export default defineComponent({
     components: {
