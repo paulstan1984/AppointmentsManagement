@@ -32,10 +32,10 @@ export default defineComponent({
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link :to="{ name: 'providers' }" :class="['nav-link']">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Service Providers</span>
-            </a>
+            </router-link>
         </li>
 
         <!-- Divider -->
@@ -48,18 +48,18 @@ export default defineComponent({
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link :to="{ name: 'resources' }" :class="['nav-link']">
                 <i class="fas fa-fw fa-chair"></i>
                 <span>Phisical Resources</span>
-            </a>
+            </router-link>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link :to="{ name: 'reservations' }" :class="['nav-link']">
                 <i class="fas fa-fw fa-calendar-check"></i>
                 <span>Reservations</span>
-            </a>
+            </router-link>
         </li>
 
         <!-- Divider -->
