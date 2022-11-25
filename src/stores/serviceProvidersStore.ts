@@ -9,11 +9,11 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
   }),
 
   actions: {
-    async fetchData() {
-      // you can directly mutate the state
-      const result = await axios.get(this.APIURL + 'service-providers-search/1')
-      console.log(result);
-    },
+    getServiceProviders() {
+      axios
+        .get(this.APIURL + 'service-providers-search/1')
+        .then(data => this.serviceProviders = data.data.results);
+    }
   },
 })
 

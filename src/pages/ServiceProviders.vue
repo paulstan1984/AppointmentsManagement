@@ -16,13 +16,14 @@ export default defineComponent({
 
     data() {
         return {
-            serviceProvidersStore: serviceProvidersStore()
+            store: serviceProvidersStore(),
         }
     },
 
     mounted() {
-        this.serviceProvidersStore.fetchData();
-    },
+        this.store.getServiceProviders();
+    }
+
 })
 </script>
 
@@ -56,7 +57,36 @@ export default defineComponent({
 
                     <!-- Content Row -->
                     <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr v-for="item in store.serviceProviders">
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.phone}}</td>
+                                        <td>{{item.email}}</td>
+                                        <td>Edit</td>
+                                    </tr>
 
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
