@@ -4,6 +4,7 @@ import SideBar from '@/components/SideBar/SideBar.vue';
 import TopBar from '@/components/TopBar/TopBar.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
+// @ts-ignore
 import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
 export default defineComponent({
@@ -76,7 +77,7 @@ export default defineComponent({
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr v-for="item in store.serviceProviders">
+                                    <tr v-for="item in store.searchResults?.results">
                                         <td>{{item.name}}</td>
                                         <td>{{item.phone}}</td>
                                         <td>{{item.email}}</td>
