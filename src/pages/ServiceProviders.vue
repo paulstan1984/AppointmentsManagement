@@ -4,6 +4,8 @@ import SideBar from '@/components/SideBar/SideBar.vue';
 import TopBar from '@/components/TopBar/TopBar.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
+import Loader from '@/components/shared/Loader.vue';
+
 // @ts-ignore
 import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
@@ -13,6 +15,7 @@ export default defineComponent({
         TopBar,
         Footer,
         ScrollTop,
+        Loader
     },
 
     data() {
@@ -52,8 +55,8 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Service Providers</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Today's reservations</a>
+                        <a href="#" @click="store.getServiceProviders()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-sync-alt"></i> Reload</a>
                     </div>
 
                     <!-- Content Row -->
@@ -83,8 +86,6 @@ export default defineComponent({
                                         <td>{{item.email}}</td>
                                         <td>Edit</td>
                                     </tr>
-
-
                                 </tbody>
                             </table>
                         </div>
@@ -109,4 +110,5 @@ export default defineComponent({
     <!-- Scroll to Top Button-->
     <ScrollTop />
 
+    <Loader v-if="store.loading"></Loader>
 </template>
