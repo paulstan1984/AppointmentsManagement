@@ -5,7 +5,7 @@ import TopBar from '@/components/TopBar/TopBar.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
 import Loader from '@/components/shared/Loader.vue';
-
+import ErrorModal from '@/components/shared/ErrorModal.vue';
 // @ts-ignore
 import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
@@ -15,7 +15,8 @@ export default defineComponent({
         TopBar,
         Footer,
         ScrollTop,
-        Loader
+        Loader,
+        ErrorModal
     },
 
     data() {
@@ -111,4 +112,5 @@ export default defineComponent({
     <ScrollTop />
 
     <Loader v-if="store.loading"></Loader>
+    <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
 </template>

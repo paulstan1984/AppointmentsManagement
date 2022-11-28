@@ -4,6 +4,10 @@ import SideBar from '@/components/SideBar/SideBar.vue';
 import TopBar from '@/components/TopBar/TopBar.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
+import Loader from '@/components/shared/Loader.vue';
+import ErrorModal from '@/components/shared/ErrorModal.vue';
+// @ts-ignore
+import { phisicalResourcesStore } from '@/stores/phisicalResourcesStore.ts';
 
 export default defineComponent({
     components: {
@@ -11,7 +15,19 @@ export default defineComponent({
         TopBar,
         Footer,
         ScrollTop,
+        Loader,
+        ErrorModal
     },
+
+    data() {
+        return {
+            store: phisicalResourcesStore(),
+        }
+    },
+
+    mounted() {
+        this.store.getPhisicalResources();
+    }
 })
 </script>
 
@@ -39,13 +55,46 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Phisical Resources</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Today's reservations</a>
+                        <a href="#" @click="store.getPhisicalResources()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-sync-alt"></i> Reload</a>
                     </div>
 
                     <!-- Content Row -->
                     <div class="row">
-
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Weekly Timetable</th>
+                                        <th>Open</th>
+                                        <th>Service Provider</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Weekly Timetable</th>
+                                        <th>Open</th>
+                                        <th>Service Provider</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr v-for="item in store.searchResults?.results">
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.description}}</td>
+                                        <td></td>
+                                        <td>{{item.open ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.service_provider_name}}</td>
+                                        <td>Edit</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
@@ -67,4 +116,7 @@ export default defineComponent({
     <!-- Scroll to Top Button-->
     <ScrollTop />
 
+
+    <Loader v-if="store.loading"></Loader>
+    <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
 </template>
