@@ -4,6 +4,11 @@ import SideBar from '@/components/SideBar/SideBar.vue';
 import TopBar from '@/components/TopBar/TopBar.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
+import Loader from '@/components/shared/Loader.vue';
+import ErrorModal from '@/components/shared/ErrorModal.vue';
+import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
+// @ts-ignore
+import { reservationsStore } from '@/stores/reservationsStore.ts';
 
 export default defineComponent({
     components: {
@@ -11,7 +16,20 @@ export default defineComponent({
         TopBar,
         Footer,
         ScrollTop,
+        Loader,
+        ErrorModal,
+        WeeklyTimetable
     },
+
+    data() {
+        return {
+            store: reservationsStore(),
+        }
+    },
+
+    mounted() {
+        this.store.getReservations();
+    }
 })
 </script>
 
@@ -39,13 +57,58 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Resrevations</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Today's reservations</a>
+
+                        <a href="#" @click="store.getReservations()"
+                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-sync-alt"></i> Reload</a>
                     </div>
 
                     <!-- Content Row -->
                     <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>State</th>
+                                        <th>Time</th>
+                                        <th>Phisical Resource</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>State</th>
+                                        <th>Time</th>
+                                        <th>Phisical Resource</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr v-for="item in store.searchResults?.results">
+                                        <td>
+                                            <div class="border-left-info pl-1">
+                                                {{ item.client_name }} <br />
+                                                {{ item.client_phone }} <br />
+                                                {{ item.client_email }}
+                                            </div>
+                                        </td>
+                                        <td>{{ item.state }}</td>
+                                        <td>{{ item.schedule_unit }} {{item.phisical_resource.schedule_type}} from
+                                            <br />{{
+                                            item.start_time }}</td>
+                                        <td>
+                                            {{ item.phisical_resource.name }}
 
+                                            <WeeklyTimetable :tt="item.phisical_resource.weekly_timetable">
+                                            </WeeklyTimetable>
+                                        </td>
+                                        <td>Edit</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
@@ -67,4 +130,6 @@ export default defineComponent({
     <!-- Scroll to Top Button-->
     <ScrollTop />
 
+    <Loader v-if="store.loading"></Loader>
+    <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
 </template>
