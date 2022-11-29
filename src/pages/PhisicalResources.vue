@@ -6,6 +6,8 @@ import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
 import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
+import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
+
 // @ts-ignore
 import { phisicalResourcesStore } from '@/stores/phisicalResourcesStore.ts';
 
@@ -16,7 +18,8 @@ export default defineComponent({
         Footer,
         ScrollTop,
         Loader,
-        ErrorModal
+        ErrorModal,
+        WeeklyTimetable
     },
 
     data() {
@@ -87,7 +90,7 @@ export default defineComponent({
                                     <tr v-for="item in store.searchResults?.results">
                                         <td>{{item.name}}</td>
                                         <td>{{item.description}}</td>
-                                        <td></td>
+                                        <td><WeeklyTimetable :tt="item.weekly_timetable"></WeeklyTimetable></td>
                                         <td>{{item.open ? 'Yes' : 'No'}}</td>
                                         <td>{{item.service_provider_name}}</td>
                                         <td>Edit</td>
