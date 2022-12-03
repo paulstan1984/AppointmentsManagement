@@ -6,6 +6,8 @@ import Footer from '@/components/Footer/Footer.vue';
 import ScrollTop from '@/components/Footer/ScrollTop.vue';
 import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
+import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
+
 // @ts-ignore
 import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
@@ -16,12 +18,24 @@ export default defineComponent({
         Footer,
         ScrollTop,
         Loader,
-        ErrorModal
+        ErrorModal,
+        EditServiceProvider
     },
 
     data() {
         return {
             store: serviceProvidersStore(),
+            selectedServiceProvider: undefined
+        }
+    },
+
+    methods: {
+        Edit(s: any) {
+            this.selectedServiceProvider = s;
+        },
+
+        Cancel() {
+            this.selectedServiceProvider = undefined;
         }
     },
 
@@ -56,8 +70,13 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Service Providers</h1>
-                        <a href="#" @click="store.getServiceProviders()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="#" @click="store.getServiceProviders()"
+                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-sync-alt"></i> Reload</a>
+
+                        <a href="#" @click="Cancel"
+                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-undo"></i> Cancel</a>
                     </div>
 
                     <!-- Content Row -->
@@ -82,10 +101,10 @@ export default defineComponent({
                                 </tfoot>
                                 <tbody>
                                     <tr v-for="item in store.searchResults?.results">
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.phone}}</td>
-                                        <td>{{item.email}}</td>
-                                        <td>Edit</td>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.phone }}</td>
+                                        <td>{{ item.email }}</td>
+                                        <td><a @click="Edit(item)">Edit</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -113,4 +132,7 @@ export default defineComponent({
 
     <Loader v-if="store.loading"></Loader>
     <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
+    <EditServiceProvider v-if="selectedServiceProvider" :serviceprovider="selectedServiceProvider">
+    </EditServiceProvider>
+
 </template>
