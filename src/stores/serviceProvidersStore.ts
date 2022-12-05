@@ -20,6 +20,16 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
         .then(data => this.searchResults = data.data)
         .catch(err => this.error = err)
         .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
+    },
+
+    updateServiceProvider(sp: any) {
+      this.loading = true;
+      delete this.error;
+      axios
+        .put(config.APIURL + 'service-providers/' + sp.id, sp)
+        .then(data => console.log(data))
+        .catch(err => this.error = err)
+        .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
     }
   },
 })

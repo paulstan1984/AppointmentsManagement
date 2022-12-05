@@ -22,6 +22,12 @@ export default defineComponent({
         EditServiceProvider
     },
 
+    computed: {
+        showEditModal(): boolean {
+            return this.selectedServiceProvider !== undefined;
+        } 
+    },
+
     data() {
         return {
             store: serviceProvidersStore(),
@@ -73,10 +79,6 @@ export default defineComponent({
                         <a href="#" @click="store.getServiceProviders()"
                             class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-sync-alt"></i> Reload</a>
-
-                        <a href="#" @click="Cancel"
-                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-undo"></i> Cancel</a>
                     </div>
 
                     <!-- Content Row -->
@@ -104,7 +106,7 @@ export default defineComponent({
                                         <td>{{ item.name }}</td>
                                         <td>{{ item.phone }}</td>
                                         <td>{{ item.email }}</td>
-                                        <td><a @click="Edit(item)">Edit</a></td>
+                                        <td><a class="btn btn-primary fas fa-edit" @click="Edit(item)">Edit</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -132,7 +134,13 @@ export default defineComponent({
 
     <Loader v-if="store.loading"></Loader>
     <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
-    <EditServiceProvider v-if="selectedServiceProvider" :serviceprovider="selectedServiceProvider">
-    </EditServiceProvider>
+
+    <v-dialog v-model="showEditModal">
+        <v-card class="p-3">
+            <EditServiceProvider :serviceprovider="selectedServiceProvider" @close="Cancel()">
+            </EditServiceProvider>
+        </v-card>
+    </v-dialog>
+
 
 </template>
