@@ -7,6 +7,7 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
 
   state: () => ({
     searchResults: undefined,
+    serviceProvider: undefined,
     error: undefined,
     loading: false
   }),
@@ -22,14 +23,14 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
         .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
     },
 
-    updateServiceProvider(sp: any) {
+    updateServiceProvider(sp: any, callback: any) {
       this.loading = true;
       delete this.error;
       axios
         .put(config.APIURL + 'service-providers/' + sp.id, sp)
-        .then(data => console.log(data))
+        .then(data => callback(true, data))
         .catch(err => this.error = err)
-        .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
+        .finally(() => { this.loading = false; callback(false, this.error) });
     }
   },
 })

@@ -22,15 +22,10 @@ export default defineComponent({
         EditServiceProvider
     },
 
-    computed: {
-        showEditModal(): boolean {
-            return this.selectedServiceProvider !== undefined;
-        } 
-    },
-
     data() {
         return {
             store: serviceProvidersStore(),
+            showEditModal: false,
             selectedServiceProvider: undefined
         }
     },
@@ -38,10 +33,16 @@ export default defineComponent({
     methods: {
         Edit(s: any) {
             this.selectedServiceProvider = s;
+            this.showEditModal = true;
         },
 
         Cancel() {
-            this.selectedServiceProvider = undefined;
+            this.showEditModal = false;
+        },
+
+        Saved() {
+            this.showEditModal = false;
+            this.store.getServiceProviders();
         }
     },
 
@@ -137,7 +138,7 @@ export default defineComponent({
 
     <v-dialog v-model="showEditModal">
         <v-card class="p-3">
-            <EditServiceProvider :serviceprovider="selectedServiceProvider" @close="Cancel()">
+            <EditServiceProvider :serviceprovider="selectedServiceProvider" @close="Cancel()" @saved="Saved()">
             </EditServiceProvider>
         </v-card>
     </v-dialog>

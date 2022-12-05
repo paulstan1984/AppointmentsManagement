@@ -5,7 +5,7 @@ import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
 export default defineComponent({
     props: ['serviceprovider'],
-    emits: ['close'],
+    emits: ['close', 'saved'],
 
     data() {
         return {
@@ -18,7 +18,7 @@ export default defineComponent({
             ],
             phoneRules: [
                 (v: any) => !!v || 'Phone is required',
-                (v: any) => /{\d}+/.test(v) || 'Phone must be valid',
+                (v: any) => /\d+/.test(v) || 'Phone must be valid',
             ],
             emailRules: [
                 (v: any) => !!v || 'E-mail is required',
@@ -29,11 +29,14 @@ export default defineComponent({
 
     methods: {
         Save() {
-            if (!this.valid) {
-                this.store.updateServiceProvider(this.serviceprovider);
-                this.$emit('close');
+            if (this.valid == null) {
+                this.store.updateServiceProvider(this.serviceprovider, (success: boolean, data: any) => {
+                    if (success) {
+                        this.$emit('saved');
+                    }
+                });
             }
-        }
+        },
     }
 });
 </script>
