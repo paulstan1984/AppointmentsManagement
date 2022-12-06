@@ -13,33 +13,46 @@ export default defineComponent({
             valid: false,
             nameRules: [
                 (v: any) => !!v || 'Name is required',
-                (v: any) => v.length <= 10 || 'Name must be less than 10 characters',
-
+                // @ts-ignore
+                (v: any) => this.store.error == undefined || this.store.error.name[0],
             ],
             phoneRules: [
-                // @ts-ignore
-                (v: any) => this.store.error.phone[0],
                 (v: any) => !!v || 'Phone is required',
                 (v: any) => /\d+/.test(v) || 'Phone must be valid',
+                // @ts-ignore
+                (v: any) => this.store.error == undefined || this.store.error.phone[0],
             ],
             emailRules: [
                 (v: any) => !!v || 'E-mail is required',
                 (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
+                // @ts-ignore
+                (v: any) => this.store.error == undefined || this.store.error.emal[0],
             ],
         }
     },
 
     methods: {
-        Save() {
-            if (this.valid == null) {
-                this.store.updateServiceProvider(this.serviceprovider, (success: boolean, data: any) => {
-                    if (success) {
-                        this.$emit('saved');
-                    }
-                    //@ts-ignore 
-                    this.$refs.form.validate();
-                });
+        async Save() {
+            //@ts-ignore 
+            this.$refs.form.validate();
+            console.log(this.valid);
+            console.log(this.store.error);
+
+            delete this.store.error;
+            console.log(1);
+            await this.store.updateServiceProvider(this.serviceprovider);
+            console.log(2);
+            console.log(this.store.error);
+
+
+            if (this.store.error == undefined) {
+                this.$emit('saved');
+                return;
             }
+
+            //@ts-ignore 
+            this.$refs.form.validate();
+
         },
     }
 });

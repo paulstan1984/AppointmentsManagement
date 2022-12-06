@@ -23,14 +23,14 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
         .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
     },
 
-    updateServiceProvider(sp: any, callback: any) {
+    updateServiceProvider(sp: any) {
       this.loading = true;
       delete this.error;
       axios
         .put(config.APIURL + 'service-providers/' + sp.id, sp)
-        .then(data => callback(true, data))
+        .then(data => this.serviceProvider = data.data)
         .catch(err => this.error = err.response.data)
-        .finally(() => { this.loading = false; callback(false, this.error) });
+        .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
     }
   },
 })
