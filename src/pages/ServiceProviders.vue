@@ -26,7 +26,8 @@ export default defineComponent({
         return {
             store: serviceProvidersStore(),
             showEditModal: false,
-            selectedServiceProvider: undefined
+            selectedServiceProvider: undefined,
+            searchResults: undefined
         }
     },
 
@@ -43,11 +44,19 @@ export default defineComponent({
         Saved() {
             this.showEditModal = false;
             this.store.getServiceProviders();
+        },
+
+        LoadServiceProviders() {
+            this.store.getServiceProviders((success: boolean, data: any) => {
+                if(success) {
+                    this.searchResults = data;
+                }
+            });
         }
     },
 
     mounted() {
-        this.store.getServiceProviders();
+        this.LoadServiceProviders();
     }
 
 })
@@ -77,7 +86,7 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Service Providers</h1>
-                        <a href="#" @click="store.getServiceProviders()"
+                        <a href="#" @click="LoadServiceProviders()"
                             class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-sync-alt"></i> Reload</a>
                     </div>
@@ -103,7 +112,7 @@ export default defineComponent({
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr v-for="item in store.searchResults?.results">
+                                    <tr v-for="item in searchResults?.results">
                                         <td>{{ item.name }}</td>
                                         <td>{{ item.phone }}</td>
                                         <td>{{ item.email }}</td>
