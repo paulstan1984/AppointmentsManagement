@@ -12,8 +12,6 @@ export default defineComponent({
             store: serviceProvidersStore(),
             valid: false,
             nameRules: [
-                // @ts-ignore
-                (v: any) => this.store.error.name[0],
                 (v: any) => !!v || 'Name is required',
                 (v: any) => v.length <= 10 || 'Name must be less than 10 characters',
 
@@ -25,8 +23,6 @@ export default defineComponent({
                 (v: any) => /\d+/.test(v) || 'Phone must be valid',
             ],
             emailRules: [
-                // @ts-ignore
-                (v: any) => this.store.error.email[0],
                 (v: any) => !!v || 'E-mail is required',
                 (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
             ],
@@ -36,13 +32,12 @@ export default defineComponent({
     methods: {
         Save() {
             if (this.valid == null) {
-                this.store.updateServiceProvider(this.serviceprovider, (success: boolean, serviceProvider: any) => {
+                this.store.updateServiceProvider(this.serviceprovider, (success: boolean, data: any) => {
                     if (success) {
                         this.$emit('saved');
                     }
                     //@ts-ignore 
                     this.$refs.form.validate();
-                    console.log(this.store.error.phone[0]);
                 });
             }
         },
