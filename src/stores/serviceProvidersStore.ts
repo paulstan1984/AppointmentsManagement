@@ -19,7 +19,7 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
       axios
         .get(config.APIURL + 'service-providers-search/1')
         .then(data => this.searchResults = data.data)
-        .catch(err => this.error = err)
+        .catch(err => this.error = err.response.data)
         .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
     },
 
@@ -29,7 +29,7 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
       axios
         .put(config.APIURL + 'service-providers/' + sp.id, sp)
         .then(data => callback(true, data))
-        .catch(err => this.error = err)
+        .catch(err => this.error = err.response.data)
         .finally(() => { this.loading = false; callback(false, this.error) });
     }
   },
