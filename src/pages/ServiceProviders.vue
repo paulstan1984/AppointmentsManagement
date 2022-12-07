@@ -32,7 +32,7 @@ export default defineComponent({
 
     methods: {
         Edit(s: any) {
-            this.selectedServiceProvider = s;
+            this.selectedServiceProvider = Object.assign({}, s);
             this.showEditModal = true;
         },
 

@@ -14,45 +14,42 @@ export default defineComponent({
             nameRules: [
                 (v: any) => !!v || 'Name is required',
                 // @ts-ignore
-                (v: any) => this.store.error == undefined || this.store.error.name[0],
+                (v: any) => !this.store.error?.name || this.store.error.name[0],
             ],
             phoneRules: [
                 (v: any) => !!v || 'Phone is required',
                 (v: any) => /\d+/.test(v) || 'Phone must be valid',
                 // @ts-ignore
-                (v: any) => this.store.error == undefined || this.store.error.phone[0],
+                (v: any) => !this.store.error?.phone || this.store.error.phone[0],
             ],
             emailRules: [
                 (v: any) => !!v || 'E-mail is required',
                 (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
                 // @ts-ignore
-                (v: any) => this.store.error == undefined || this.store.error.emal[0],
+                (v: any) => !this.store.error?.email || this.store.error.emal[0],
             ],
         }
     },
 
     methods: {
         async Save() {
-            //@ts-ignore 
-            this.$refs.form.validate();
-            console.log(this.valid);
-            console.log(this.store.error);
 
+            //@ts-ignore 
+            await this.$refs.form.resetValidation();
             delete this.store.error;
-            console.log(1);
-            await this.store.updateServiceProvider(this.serviceprovider);
-            console.log(2);
-            console.log(this.store.error);
+            //@ts-ignore
+            await this.$refs.form.validate();
 
+            if (this.valid == false) return;
 
-            if (this.store.error == undefined) {
-                this.$emit('saved');
-                return;
-            }
-
-            //@ts-ignore 
-            this.$refs.form.validate();
-
+            this.store.updateServiceProvider(this.serviceprovider, () => {
+                if (!this.store.error) {
+                    this.$emit('saved');
+                } else {
+                    //@ts-ignore 
+                    this.$refs.form.validate();
+                }
+            });
         },
     }
 });
