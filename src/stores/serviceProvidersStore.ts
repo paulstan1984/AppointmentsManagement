@@ -18,9 +18,9 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
 
   actions: {
     getServiceProviders(keyword = undefined) {
-      
+
       let urlAddition = '';
-      if(keyword){
+      if(keyword && (keyword as string).length > 0){
         urlAddition = '/' + keyword;
       }
 
