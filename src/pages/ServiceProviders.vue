@@ -20,6 +20,8 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 // @ts-ignore
 import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
+// @ts-ignore
+import { appStore } from '@/stores/appStore.ts';
 
 export default defineComponent({
     components: {
@@ -34,6 +36,7 @@ export default defineComponent({
 
     data() {
         return {
+            appStore: appStore(),
             store: serviceProvidersStore(),
             showEditModal: false,
             selectedServiceProvider: undefined
@@ -71,6 +74,7 @@ export default defineComponent({
     },
 
     mounted() {
+        this.appStore.searchEntities = 'sp';
         this.store.getServiceProviders();
     }
 

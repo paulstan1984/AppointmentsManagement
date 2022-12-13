@@ -10,6 +10,8 @@ import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 
 // @ts-ignore
 import { phisicalResourcesStore } from '@/stores/phisicalResourcesStore.ts';
+// @ts-ignore
+import { appStore } from '@/stores/appStore.ts';
 
 export default defineComponent({
     components: {
@@ -24,11 +26,13 @@ export default defineComponent({
 
     data() {
         return {
+            appStore: appStore(),
             store: phisicalResourcesStore(),
         }
     },
 
     mounted() {
+        this.appStore.searchEntities = 'pr';
         this.store.getPhisicalResources();
     }
 })

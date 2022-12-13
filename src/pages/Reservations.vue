@@ -9,6 +9,8 @@ import ErrorModal from '@/components/shared/ErrorModal.vue';
 import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 // @ts-ignore
 import { reservationsStore } from '@/stores/reservationsStore.ts';
+// @ts-ignore
+import { appStore } from '@/stores/appStore.ts';
 
 export default defineComponent({
     components: {
@@ -23,11 +25,13 @@ export default defineComponent({
 
     data() {
         return {
+            appStore: appStore(),
             store: reservationsStore(),
         }
     },
 
     mounted() {
+        this.appStore.searchEntities = 're';
         this.store.getReservations();
     }
 })
