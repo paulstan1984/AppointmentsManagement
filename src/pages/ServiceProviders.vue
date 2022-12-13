@@ -8,6 +8,16 @@ import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
 import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
+/**
+ * Todo:
+ *  add service provider
+ *  delete service provider
+ *  search service providers
+ * 
+ *  phisical resources
+ *  reservations CRUD
+ */
+
 // @ts-ignore
 import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
 
@@ -34,6 +44,20 @@ export default defineComponent({
         Edit(s: any) {
             this.selectedServiceProvider = Object.assign({}, s);
             this.showEditModal = true;
+        },
+
+        Delete(s: any) {
+            if (confirm('Are you sure?')) {
+                this.store.deleteServiceProvider(s, (success: boolean, data: any) => {
+                    if (success) {
+                        this.store.getServiceProviders();
+                    } else {
+                        this.store.error = data;
+                        //@ts-ignore 
+                        setTimeout(() => delete this.store.error, config.errorDisplayTimeout);
+                    }
+                });
+            }
         },
 
         Cancel() {
@@ -77,9 +101,16 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Service Providers</h1>
-                        <a href="#" @click="store.getServiceProviders()"
-                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-sync-alt"></i> Reload</a>
+
+                        <div class="d-sm-flex justify-content-end">
+                            <a @click="Edit({})"
+                                class="ms-2 d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fas fa-plus"></i> Add</a>
+
+                            <a @click="store.getServiceProviders()"
+                                class="ms-2 d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fas fa-sync-alt"></i> Reload</a>
+                        </div>
                     </div>
 
                     <!-- Content Row -->
@@ -107,7 +138,12 @@ export default defineComponent({
                                         <td>{{ item.name }}</td>
                                         <td>{{ item.phone }}</td>
                                         <td>{{ item.email }}</td>
-                                        <td><a class="btn btn-primary fas fa-edit" @click="Edit(item)">Edit</a></td>
+                                        <td>
+                                            <a class="btn btn-primary" @click="Edit(item)"><i
+                                                    class="fas fa-edit">Edit</i></a>
+                                            <a class="ms-2 btn btn-danger"><i class="fas fa-trash"
+                                                    @click="Delete(item)">Delete</i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

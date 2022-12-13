@@ -10,7 +10,7 @@ export default defineComponent({
     components: {
         Loader
     },
-    
+
     props: ['serviceprovider'],
     emits: ['close', 'saved'],
 
@@ -20,17 +20,20 @@ export default defineComponent({
             error: undefined,
             valid: false,
             nameRules: [
+                (v: any) => (v || '').length <= 50 || 'A maximum of 50 characters is allowed.',
                 (v: any) => !!v || 'Name is required',
                 // @ts-ignore
                 (v: any) => !this.error?.name || this.error.name[0],
             ],
             phoneRules: [
+                (v: any) => (v || '').length <= 10 || 'A maximum of 10 characters is allowed.',
                 (v: any) => !!v || 'Phone is required',
                 (v: any) => /\d+/.test(v) || 'Phone must be valid',
                 // @ts-ignore
                 (v: any) => !this.error?.phone || this.error.phone[0],
             ],
             emailRules: [
+                (v: any) => (v || '').length <= 200 || 'A maximum of 200 characters is allowed.',
                 (v: any) => !!v || 'E-mail is required',
                 (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
                 // @ts-ignore
@@ -50,7 +53,7 @@ export default defineComponent({
 
             if (this.valid == false) return;
 
-            this.store.updateServiceProvider(this.serviceprovider, (success: boolean, data: any) => {
+            this.store.storeServiceProvider(this.serviceprovider, (success: boolean, data: any) => {
                 if (success) {
                     this.$emit('saved');
                 } else {
@@ -59,19 +62,19 @@ export default defineComponent({
                     this.$refs.form.validate();
                 }
             });
-        },
-    }
+        }
+    },
 });
 </script>
 
 <template>
     <v-form ref="form" v-model="valid">
-        <v-text-field v-model="serviceprovider.name" :counter="100" :rules="nameRules" label="Name"
-            required></v-text-field>
-        <v-text-field v-model="serviceprovider.phone" :counter="100" :rules="phoneRules" label="Phone"
-            required></v-text-field>
-        <v-text-field v-model="serviceprovider.email" :counter="200" :rules="emailRules" label="Email"
-            required></v-text-field>
+        <v-text-field v-model="serviceprovider.name" @keydown.enter="Save()" :counter="100" :rules="nameRules"
+            label="Name" required></v-text-field>
+        <v-text-field v-model="serviceprovider.phone" @keydown.enter="Save()" :counter="100" :rules="phoneRules"
+            label="Phone" required></v-text-field>
+        <v-text-field v-model="serviceprovider.email" @keydown.enter="Save()" :counter="200" :rules="emailRules"
+            label="Email" required></v-text-field>
 
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
