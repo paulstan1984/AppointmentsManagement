@@ -17,10 +17,10 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
   }),
 
   actions: {
-    getServiceProviders(keyword = undefined) {
+    search(keyword = undefined) {
 
       let urlAddition = '';
-      if(keyword && (keyword as string).length > 0){
+      if (keyword && (keyword as string).length > 0) {
         urlAddition = '/' + keyword;
       }
 
@@ -36,17 +36,17 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
         });
     },
 
-    storeServiceProvider(sp: any, cb: (success: boolean, data: any) => void) {
+    store(item: any, cb: (success: boolean, data: any) => void) {
       this.loading = true;
       delete this.error;
       let apiCall = undefined;
 
-      if (sp.id > 0) {
+      if (item.id > 0) {
         apiCall = axios
-          .put(config.APIURL + 'service-providers/' + sp.id, sp);
+          .put(config.APIURL + 'service-providers/' + item.id, item);
       } else {
         apiCall = axios
-          .post(config.APIURL + 'service-providers', sp);
+          .post(config.APIURL + 'service-providers', item);
       }
       apiCall.then(data => cb(true, data.data))
         .catch(err => cb(false, err.response.data))
@@ -55,11 +55,11 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
         });
     },
 
-    deleteServiceProvider(sp: any, cb: (success: boolean, data: any) => void) {
+    delete(item: any, cb: (success: boolean, data: any) => void) {
       this.loading = true;
       delete this.error;
       let apiCall = axios
-        .delete(config.APIURL + 'service-providers/' + sp.id);
+        .delete(config.APIURL + 'service-providers/' + item.id);
 
       apiCall.then(data => cb(true, data.data))
         .catch(err => cb(false, err.response.data))

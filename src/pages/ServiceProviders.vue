@@ -10,12 +10,9 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 /**
  * Todo:
- *  add service provider
- *  delete service provider
- *  search service providers
- * 
  *  phisical resources
  *  reservations CRUD
+ *  login / logout
  */
 
 // @ts-ignore
@@ -51,7 +48,7 @@ export default defineComponent({
 
         Delete(s: any) {
             if (confirm('Are you sure?')) {
-                this.store.deleteServiceProvider(s, (success: boolean, data: any) => {
+                this.store.delete(s, (success: boolean, data: any) => {
                     if (success) {
                         this.store.getServiceProviders();
                     } else {
@@ -69,13 +66,13 @@ export default defineComponent({
 
         Saved() {
             this.showEditModal = false;
-            this.store.getServiceProviders();
+            this.store.search();
         }
     },
 
     mounted() {
         this.appStore.searchEntities = 'sp';
-        this.store.getServiceProviders();
+        this.store.search();
     }
 
 })

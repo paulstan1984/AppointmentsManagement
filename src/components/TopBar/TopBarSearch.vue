@@ -25,15 +25,15 @@ export default defineComponent({
             console.log(this.appStore.searchEntities);
             switch (this.appStore.searchEntities) {
                 case 'sp':
-                    this.spStore.getServiceProviders(this.keyword);
+                    this.spStore.search(this.keyword);
                     break;
 
                 case 'pr':
-                    this.prStore.getPhisicalResources(this.keyword);
+                    this.prStore.search(this.keyword);
                     break;
 
                 case 're':
-                    this.reStore.getReservations(this.keyword);
+                    this.reStore.search(this.keyword);
                     break;
             }
         }

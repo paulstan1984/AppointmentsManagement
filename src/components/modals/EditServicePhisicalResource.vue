@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import Loader from '@/components/shared/Loader.vue';
 
 // @ts-ignore
-import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
+import { phisicalResourcesStore } from '@/stores/phisicalResourcesStore';
 
 export default defineComponent({
 
@@ -11,12 +11,12 @@ export default defineComponent({
         Loader
     },
 
-    props: ['serviceprovider'],
+    props: ['phisicalresource'],
     emits: ['close', 'saved'],
 
     data() {
         return {
-            store: serviceProvidersStore(),
+            store: phisicalResourcesStore(),
             error: undefined,
             valid: false,
             nameRules: [
@@ -53,7 +53,7 @@ export default defineComponent({
 
             if (this.valid == false) return;
 
-            this.store.store(this.serviceprovider, (success: boolean, data: any) => {
+            this.store.store(this.phisicalresource, (success: boolean, data: any) => {
                 if (success) {
                     this.$emit('saved');
                 } else {
@@ -69,11 +69,11 @@ export default defineComponent({
 
 <template>
     <v-form ref="form" v-model="valid">
-        <v-text-field v-model="serviceprovider.name" @keydown.enter="Save()" :counter="100" :rules="nameRules"
+        <v-text-field v-model="phisicalresource.name" @keydown.enter="Save()" :counter="100" :rules="nameRules"
             label="Name" required></v-text-field>
-        <v-text-field v-model="serviceprovider.phone" @keydown.enter="Save()" :counter="100" :rules="phoneRules"
+        <v-text-field v-model="phisicalresource.phone" @keydown.enter="Save()" :counter="100" :rules="phoneRules"
             label="Phone" required></v-text-field>
-        <v-text-field v-model="serviceprovider.email" @keydown.enter="Save()" :counter="200" :rules="emailRules"
+        <v-text-field v-model="phisicalresource.email" @keydown.enter="Save()" :counter="200" :rules="emailRules"
             label="Email" required></v-text-field>
 
         <v-btn color="error" class="mr-4" @click="$emit('close')">

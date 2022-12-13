@@ -12,14 +12,23 @@ export const reservationsStore = defineStore('reservationsStore', {
   }),
 
   actions: {
-    getReservations() {
+    search(keyword = undefined) {
+
+      let urlAddition = '';
+      if (keyword && (keyword as string).length > 0) {
+        urlAddition = '/' + keyword;
+      }
+
       this.loading = true;
       delete this.error;
       axios
-        .get(config.APIURL + 'reservations-search/1')
+        .get(config.APIURL + 'reservations-search/1' + urlAddition)
         .then(data => this.searchResults = data.data)
         .catch(err => this.error = err)
-        .finally(() => { this.loading = false; setTimeout(() => delete this.error, config.errorDisplayTimeout) });
+        .finally(() => { 
+          this.loading = false; 
+          setTimeout(() => delete this.error, config.errorDisplayTimeout) 
+        });
     }
   },
 })

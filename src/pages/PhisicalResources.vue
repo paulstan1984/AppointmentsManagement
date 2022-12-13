@@ -33,7 +33,7 @@ export default defineComponent({
 
     mounted() {
         this.appStore.searchEntities = 'pr';
-        this.store.getPhisicalResources();
+        this.store.search();
     }
 })
 </script>
@@ -62,7 +62,7 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Phisical Resources</h1>
-                        <a href="#" @click="store.getPhisicalResources()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="#" @click="store.search()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-sync-alt"></i> Reload</a>
                     </div>
 
