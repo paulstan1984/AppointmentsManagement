@@ -4,6 +4,7 @@ import axios from 'axios';
 import config from '@/stores/environment.ts';
 
 
+const resourceURL = 'service-providers';
 /**
  * The search method does not have callback function
  * All other methods have callback function. 
@@ -27,7 +28,7 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
       this.loading = true;
       delete this.error;
       axios
-        .get(config.APIURL + 'service-providers-search/1' + urlAddition)
+        .get(config.APIURL + resourceURL + '-search/1' + urlAddition)
         .then(data => this.searchResults = data.data)
         .catch(err => this.error = err.response.data)
         .finally(() => {
@@ -43,10 +44,10 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
 
       if (item.id > 0) {
         apiCall = axios
-          .put(config.APIURL + 'service-providers/' + item.id, item);
+          .put(config.APIURL + resourceURL + '/' + item.id, item);
       } else {
         apiCall = axios
-          .post(config.APIURL + 'service-providers', item);
+          .post(config.APIURL + resourceURL, item);
       }
       apiCall.then(data => cb(true, data.data))
         .catch(err => cb(false, err.response.data))
@@ -59,7 +60,7 @@ export const serviceProvidersStore = defineStore('serviceProvidersStore', {
       this.loading = true;
       delete this.error;
       let apiCall = axios
-        .delete(config.APIURL + 'service-providers/' + item.id);
+        .delete(config.APIURL + resourceURL + '/' + item.id);
 
       apiCall.then(data => cb(true, data.data))
         .catch(err => cb(false, err.response.data))

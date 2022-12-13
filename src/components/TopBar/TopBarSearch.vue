@@ -22,7 +22,7 @@ export default defineComponent({
 
     methods: {
         Search() {
-            console.log(this.appStore.searchEntities);
+
             switch (this.appStore.searchEntities) {
                 case 'sp':
                     this.spStore.search(this.keyword);
