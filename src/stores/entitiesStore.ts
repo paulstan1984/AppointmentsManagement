@@ -3,14 +3,17 @@ import axios from 'axios';
 // @ts-ignore
 import config from '@/stores/environment.ts';
 
-const resourceURL = 'phisical-resources';
-
-export const phisicalResourcesStore = defineStore('phisicalResourcesStore', {
+/**
+ * The search method does not have callback function
+ * All other methods have callback function. 
+ * */
+export const entitiesStore = defineStore('entitiesStore', {
 
   state: () => ({
     searchResults: undefined,
     error: undefined,
-    loading: false
+    loading: false,
+    resourceURL: ''
   }),
 
   actions: {
@@ -24,7 +27,7 @@ export const phisicalResourcesStore = defineStore('phisicalResourcesStore', {
       this.loading = true;
       delete this.error;
       axios
-        .get(config.APIURL + resourceURL + '-search/1' + urlAddition)
+        .get(config.APIURL + this.resourceURL + '-search/1' + urlAddition)
         .then(data => this.searchResults = data.data)
         .catch(err => this.error = err)
         .finally(() => {
@@ -40,10 +43,10 @@ export const phisicalResourcesStore = defineStore('phisicalResourcesStore', {
 
       if (item.id > 0) {
         apiCall = axios
-          .put(config.APIURL + resourceURL + '/' + item.id, item);
+          .put(config.APIURL + this.resourceURL + '/' + item.id, item);
       } else {
         apiCall = axios
-          .post(config.APIURL + resourceURL, item);
+          .post(config.APIURL + this.resourceURL, item);
       }
       apiCall.then(data => cb(true, data.data))
         .catch(err => cb(false, err.response.data))
@@ -56,7 +59,7 @@ export const phisicalResourcesStore = defineStore('phisicalResourcesStore', {
       this.loading = true;
       delete this.error;
       let apiCall = axios
-        .delete(config.APIURL + resourceURL + '/' + item.id);
+        .delete(config.APIURL + this.resourceURL + '/' + item.id);
 
       apiCall.then(data => cb(true, data.data))
         .catch(err => cb(false, err.response.data))

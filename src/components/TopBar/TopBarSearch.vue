@@ -3,19 +3,13 @@ import { defineComponent } from 'vue'
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 // @ts-ignore
-import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
-// @ts-ignore
-import { phisicalResourcesStore } from '@/stores/phisicalResourcesStore.ts';
-// @ts-ignore
-import { reservationsStore } from '@/stores/reservationsStore.ts';
+import { entitiesStore } from '@/stores/entitiesStore.ts';
 
 export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            spStore: serviceProvidersStore(),
-            prStore: phisicalResourcesStore(),
-            reStore: reservationsStore(),
+            entitiesStore: entitiesStore(),
             keyword: ''
         }
     },
@@ -25,17 +19,19 @@ export default defineComponent({
 
             switch (this.appStore.searchEntities) {
                 case 'sp':
-                    this.spStore.search(this.keyword);
+                    this.entitiesStore.resourceURL = 'service-providers';
                     break;
 
                 case 'pr':
-                    this.prStore.search(this.keyword);
+                    this.entitiesStore.resourceURL = 'phisical-resources';
                     break;
 
                 case 're':
-                    this.reStore.search(this.keyword);
+                    this.entitiesStore.resourceURL = 'reservations';
                     break;
             }
+
+            this.entitiesStore.search(this.keyword);
         }
     }
 })

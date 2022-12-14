@@ -12,6 +12,7 @@ export default defineComponent({
 
     methods: {
         dayliTimetable(day: string): string | undefined {
+            if (!this.tt) return undefined;
             let dayTT = [];
             for (let i = 0; i < this.tt[day].length; i = i + 2) {
                 dayTT.push(this.tt[day][i] + '-' + this.tt[day][i + 1]);

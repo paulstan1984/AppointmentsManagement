@@ -9,7 +9,7 @@ import ErrorModal from '@/components/shared/ErrorModal.vue';
 import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 
 // @ts-ignore
-import { phisicalResourcesStore } from '@/stores/phisicalResourcesStore.ts';
+import { entitiesStore } from '@/stores/entitiesStore';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 
@@ -27,12 +27,13 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            store: phisicalResourcesStore(),
+            store: entitiesStore(),
         }
     },
 
     mounted() {
         this.appStore.searchEntities = 'pr';
+        this.store.resourceURL = 'phisical-resources';
         this.store.search();
     }
 })

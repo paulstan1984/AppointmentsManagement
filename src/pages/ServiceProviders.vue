@@ -16,7 +16,7 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
  */
 
 // @ts-ignore
-import { serviceProvidersStore } from '@/stores/serviceProvidersStore.ts';
+import { entitiesStore } from '@/stores/entitiesStore';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 
@@ -34,7 +34,7 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            store: serviceProvidersStore(),
+            store: entitiesStore(),
             showEditModal: false,
             selectedServiceProvider: undefined
         }
@@ -50,7 +50,7 @@ export default defineComponent({
             if (confirm('Are you sure?')) {
                 this.store.delete(s, (success: boolean, data: any) => {
                     if (success) {
-                        this.store.getServiceProviders();
+                        this.store.search();
                     } else {
                         this.store.error = data;
                         //@ts-ignore 
@@ -72,6 +72,7 @@ export default defineComponent({
 
     mounted() {
         this.appStore.searchEntities = 'sp';
+        this.store.resourceURL = 'service-providers';
         this.store.search();
     }
 

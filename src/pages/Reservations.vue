@@ -8,7 +8,7 @@ import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
 import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 // @ts-ignore
-import { reservationsStore } from '@/stores/reservationsStore.ts';
+import { entitiesStore } from '@/stores/entitiesStore';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 
@@ -26,12 +26,13 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            store: reservationsStore(),
+            store: entitiesStore(),
         }
     },
 
     mounted() {
         this.appStore.searchEntities = 're';
+        this.store.resourceURL = 'reservations';
         this.store.search();
     }
 })
@@ -99,13 +100,13 @@ export default defineComponent({
                                             </div>
                                         </td>
                                         <td>{{ item.state }}</td>
-                                        <td>{{ item.schedule_unit }} {{item.phisical_resource.schedule_type}} from
+                                        <td>{{ item.schedule_unit }} {{item.phisical_resource?.schedule_type}} from
                                             <br />{{
                                             item.start_time }}</td>
                                         <td>
-                                            {{ item.phisical_resource.name }}
+                                            {{ item.phisical_resource?.name }}
 
-                                            <WeeklyTimetable :tt="item.phisical_resource.weekly_timetable">
+                                            <WeeklyTimetable :tt="item.phisical_resource?.weekly_timetable">
                                             </WeeklyTimetable>
                                         </td>
                                         <td>Edit</td>
