@@ -34,7 +34,7 @@ export default defineComponent({
             ],
             scheduleTypeRules: [
                 // @ts-ignore
-                (v: any) => this.scheduleTypes.findIndex(v) !== -1 || 'A maximum of 500 characters is allowed.',
+                (v: any) => this.scheduleTypes.findIndex(e => e == v) !== -1 || 'A maximum of 500 characters is allowed.',
                 // @ts-ignore
                 (v: any) => !this.error?.description || this.error.description[0],
             ],
@@ -73,6 +73,12 @@ export default defineComponent({
 
     mounted() {
         this.store.resourceURL = config.PhisicalResourcesURL;
+        if (this.entity.open == 1) {
+            this.entity.open = true;
+        } else {
+            this.entity.open = false;
+        }
+        console.log(this.entity);
     }
 });
 </script>
@@ -85,8 +91,7 @@ export default defineComponent({
         <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type"
             :rules="scheduleTypeRules"></v-select>
 
-        <!-- aici -->
-        <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
+        <v-checkbox v-model="entity.open" :label="`Checkbox 1: ${entity.open.toString()}`"></v-checkbox>
 
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
