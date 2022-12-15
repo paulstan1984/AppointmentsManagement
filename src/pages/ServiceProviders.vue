@@ -19,6 +19,7 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 import { entitiesStore } from '@/stores/entitiesStore';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
+import config from '@/stores/environment';
 
 export default defineComponent({
     components: {
@@ -71,8 +72,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.appStore.searchEntities = 'sp';
-        this.store.resourceURL = 'service-providers';
+        this.store.resourceURL = config.ServiceProvudersURL;
         this.store.search();
     }
 
@@ -109,7 +109,7 @@ export default defineComponent({
                                 class="ms-2 d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                     class="fas fa-plus"></i> Add</a>
 
-                            <a @click="store.getServiceProviders()"
+                            <a @click="store.search()"
                                 class="ms-2 d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                     class="fas fa-sync-alt"></i> Reload</a>
                         </div>

@@ -4,6 +4,7 @@ import Loader from '@/components/shared/Loader.vue';
 
 // @ts-ignore
 import { entitiesStore } from '@/stores/entitiesStore';
+import config from '@/stores/environment';
 
 export default defineComponent({
 
@@ -66,7 +67,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.store.resourceURL = 'service-providers';
+        this.store.resourceURL = config.ServiceProvudersURL;
     }
 });
 </script>

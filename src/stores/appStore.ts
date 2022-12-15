@@ -4,7 +4,6 @@ export const appStore = defineStore('appState', {
 
   state: () => ({
     menuToggled: false,
-    searchEntities: ''
   }),
 
   actions: {

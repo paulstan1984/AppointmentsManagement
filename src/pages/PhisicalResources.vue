@@ -7,11 +7,13 @@ import ScrollTop from '@/components/Footer/ScrollTop.vue';
 import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
 import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
+import EditPhisicalResource from '@/components/modals/EditPhisicalResource.vue';
 
 // @ts-ignore
 import { entitiesStore } from '@/stores/entitiesStore';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
+import config from '@/stores/environment';
 
 export default defineComponent({
     components: {
@@ -21,19 +23,51 @@ export default defineComponent({
         ScrollTop,
         Loader,
         ErrorModal,
-        WeeklyTimetable
+        WeeklyTimetable,
+        EditPhisicalResource
     },
 
     data() {
         return {
             appStore: appStore(),
             store: entitiesStore(),
+            showEditModal: false,
+            selectedEntity: undefined
+        }
+    },
+
+    methods: {
+        Edit(s: any) {
+            this.selectedEntity = Object.assign({}, s);
+            this.showEditModal = true;
+        },
+
+        Delete(s: any) {
+            if (confirm('Are you sure?')) {
+                this.store.delete(s, (success: boolean, data: any) => {
+                    if (success) {
+                        this.store.search();
+                    } else {
+                        this.store.error = data;
+                        //@ts-ignore 
+                        setTimeout(() => delete this.store.error, config.errorDisplayTimeout);
+                    }
+                });
+            }
+        },
+
+        Cancel() {
+            this.showEditModal = false;
+        },
+
+        Saved() {
+            this.showEditModal = false;
+            this.store.search();
         }
     },
 
     mounted() {
-        this.appStore.searchEntities = 'pr';
-        this.store.resourceURL = 'phisical-resources';
+        this.store.resourceURL = config.PhisicalResourcesURL;
         this.store.search();
     }
 })
@@ -98,7 +132,12 @@ export default defineComponent({
                                         <td><WeeklyTimetable :tt="item.weekly_timetable"></WeeklyTimetable></td>
                                         <td>{{item.open ? 'Yes' : 'No'}}</td>
                                         <td>{{item.service_provider_name}}</td>
-                                        <td>Edit</td>
+                                        <td>
+                                            <a class="btn btn-primary" @click="Edit(item)"><i
+                                                    class="fas fa-edit">Edit</i></a>
+                                            <a class="ms-2 btn btn-danger"><i class="fas fa-trash"
+                                                    @click="Delete(item)">Delete</i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -127,4 +166,12 @@ export default defineComponent({
 
     <Loader v-if="store.loading"></Loader>
     <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
+
+    <v-dialog v-model="showEditModal">
+        <v-card class="p-3">
+            <EditPhisicalResource :entity="selectedEntity" @close="Cancel()" @saved="Saved()">
+            </EditPhisicalResource>
+        </v-card>
+    </v-dialog>
+
 </template>

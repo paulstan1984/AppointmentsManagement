@@ -1,14 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 // @ts-ignore
-import { appStore } from '@/stores/appStore.ts';
-// @ts-ignore
 import { entitiesStore } from '@/stores/entitiesStore.ts';
 
 export default defineComponent({
     data() {
         return {
-            appStore: appStore(),
             entitiesStore: entitiesStore(),
             keyword: ''
         }
@@ -16,21 +13,6 @@ export default defineComponent({
 
     methods: {
         Search() {
-
-            switch (this.appStore.searchEntities) {
-                case 'sp':
-                    this.entitiesStore.resourceURL = 'service-providers';
-                    break;
-
-                case 'pr':
-                    this.entitiesStore.resourceURL = 'phisical-resources';
-                    break;
-
-                case 're':
-                    this.entitiesStore.resourceURL = 'reservations';
-                    break;
-            }
-
             this.entitiesStore.search(this.keyword);
         }
     }

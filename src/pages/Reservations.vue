@@ -11,6 +11,7 @@ import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 import { entitiesStore } from '@/stores/entitiesStore';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
+import config from '@/stores/environment';
 
 export default defineComponent({
     components: {
@@ -31,8 +32,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.appStore.searchEntities = 're';
-        this.store.resourceURL = 'reservations';
+        this.store.resourceURL = config.ReservationsURL;
         this.store.search();
     }
 })

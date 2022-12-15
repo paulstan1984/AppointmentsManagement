@@ -4,6 +4,7 @@ import Loader from '@/components/shared/Loader.vue';
 
 // @ts-ignore
 import { entitiesStore } from '@/stores/entitiesStore';
+import config from '@/stores/environment';
 
 export default defineComponent({
 
@@ -11,7 +12,7 @@ export default defineComponent({
         Loader
     },
 
-    props: ['phisicalresource'],
+    props: ['entity'],
     emits: ['close', 'saved'],
 
     data() {
@@ -19,18 +20,23 @@ export default defineComponent({
             store: entitiesStore(),
             error: undefined,
             valid: false,
+            scheduleTypes: ['hour', 'minute'],
             nameRules: [
                 (v: any) => (v || '').length <= 50 || 'A maximum of 50 characters is allowed.',
                 (v: any) => !!v || 'Name is required',
                 // @ts-ignore
                 (v: any) => !this.error?.name || this.error.name[0],
             ],
-            phoneRules: [
-                (v: any) => (v || '').length <= 10 || 'A maximum of 10 characters is allowed.',
-                (v: any) => !!v || 'Phone is required',
-                (v: any) => /\d+/.test(v) || 'Phone must be valid',
+            descriptionRules: [
+                (v: any) => (v || '').length <= 500 || 'A maximum of 500 characters is allowed.',
                 // @ts-ignore
-                (v: any) => !this.error?.phone || this.error.phone[0],
+                (v: any) => !this.error?.description || this.error.description[0],
+            ],
+            scheduleTypeRules: [
+                // @ts-ignore
+                (v: any) => this.scheduleTypes.findIndex(v) !== -1 || 'A maximum of 500 characters is allowed.',
+                // @ts-ignore
+                (v: any) => !this.error?.description || this.error.description[0],
             ],
             emailRules: [
                 (v: any) => (v || '').length <= 200 || 'A maximum of 200 characters is allowed.',
@@ -53,7 +59,7 @@ export default defineComponent({
 
             if (this.valid == false) return;
 
-            this.store.store(this.phisicalresource, (success: boolean, data: any) => {
+            this.store.store(this.entity, (success: boolean, data: any) => {
                 if (success) {
                     this.$emit('saved');
                 } else {
@@ -66,19 +72,21 @@ export default defineComponent({
     },
 
     mounted() {
-        this.store.resourceURL = 'phisical-resources';
+        this.store.resourceURL = config.PhisicalResourcesURL;
     }
 });
 </script>
 
 <template>
     <v-form ref="form" v-model="valid">
-        <v-text-field v-model="phisicalresource.name" @keydown.enter="Save()" :counter="100" :rules="nameRules"
-            label="Name" required></v-text-field>
-        <v-text-field v-model="phisicalresource.phone" @keydown.enter="Save()" :counter="100" :rules="phoneRules"
-            label="Phone" required></v-text-field>
-        <v-text-field v-model="phisicalresource.email" @keydown.enter="Save()" :counter="200" :rules="emailRules"
-            label="Email" required></v-text-field>
+        <v-text-field v-model="entity.name" @keydown.enter="Save()" :counter="100" :rules="nameRules" label="Name"
+            required></v-text-field>
+        <v-textarea v-model="entity.description" :rules="descriptionRules" label="Description"></v-textarea>
+        <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type"
+            :rules="scheduleTypeRules"></v-select>
+
+        <!-- aici -->
+        <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
 
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
