@@ -22,6 +22,7 @@ export default defineComponent({
             valid: false,
             scheduleTypes: ['hour', 'minute'],
             service_providers: [{ id: 1, title: 'a' }, { id: 2, title: 'b' }],
+            search: '',
             nameRules: [
                 (v: any) => (v || '').length <= 50 || 'A maximum of 50 characters is allowed.',
                 (v: any) => !!v || 'Name is required',
@@ -97,11 +98,11 @@ export default defineComponent({
         <v-textarea v-model="entity.description" :rules="descriptionRules" label="Description"></v-textarea>
         <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type"
             :rules="scheduleTypeRules"></v-select>
-
         <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
 
+        <input v-model="search"/>
         <v-autocomplete v-model="entity.service_provider_id" :items="service_providers"
-            label="Service Provider" :search-input.sync="search"></v-autocomplete>
+            label="Service Provider" @update:search-input="search"></v-autocomplete>
 
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
