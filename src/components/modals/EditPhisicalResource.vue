@@ -18,11 +18,12 @@ export default defineComponent({
     data() {
         return {
             store: entitiesStore(),
+            spStore: entitiesStore(),
             error: undefined,
             valid: false,
             scheduleTypes: ['hour', 'minute'],
             service_providers: [{ id: 1, title: 'a' }, { id: 2, title: 'b' }],
-            search: '',
+            searchServiceProvider: '',
             nameRules: [
                 (v: any) => (v || '').length <= 50 || 'A maximum of 50 characters is allowed.',
                 (v: any) => !!v || 'Name is required',
@@ -50,10 +51,10 @@ export default defineComponent({
         }
     },
 
-    //nu functioneaza watch in typescript -> search and fix
     watch: {
-        search(newQuestion, oldQuestion) {
-            console.log(newQuestion);
+        searchServiceProvider(val) {
+            console.log('watch searchServiceProvider', val);
+            this.spStore.search(val);
         }
     },
 
@@ -82,6 +83,8 @@ export default defineComponent({
 
     mounted() {
         this.store.resourceURL = config.PhisicalResourcesURL;
+        this.spStore.resourceURL = config.ServiceProvudersURL;
+        this.spStore.search();
         if (this.entity.open == 1) {
             this.entity.open = true;
         } else {
@@ -100,9 +103,9 @@ export default defineComponent({
             :rules="scheduleTypeRules"></v-select>
         <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
 
-        <input v-model="search"/>
-        <v-autocomplete v-model="entity.service_provider_id" :items="service_providers"
-            label="Service Provider" @update:search-input="search"></v-autocomplete>
+        <v-autocomplete v-model="entity.service_provider_id" :items="spStore.searchResults?.results"
+            label="Service Provider" item-title="name" item-value="id"
+            v-model:search="searchServiceProvider"></v-autocomplete>
 
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
