@@ -21,7 +21,10 @@ export default defineComponent({
             spStore: entitiesStore(),
             error: undefined,
             valid: false,
-            scheduleTypes: ['hour', 'minute'],
+            scheduleTypes: [
+                { key: 'hour', name: 'Hour' },
+                { key: 'minute', name: 'Minute' }
+            ],
             service_providers: [{ id: 1, title: 'a' }, { id: 2, title: 'b' }],
             searchServiceProvider: '',
             nameRules: [
@@ -37,7 +40,7 @@ export default defineComponent({
             ],
             scheduleTypeRules: [
                 // @ts-ignore
-                (v: any) => this.scheduleTypes.findIndex(e => e == v) !== -1 || 'A maximum of 500 characters is allowed.',
+                (v: any) => this.scheduleTypes.findIndex(e => e.key == v) !== -1 || 'A maximum of 500 characters is allowed.',
                 // @ts-ignore
                 (v: any) => !this.error?.description || this.error.description[0],
             ],
@@ -100,7 +103,7 @@ export default defineComponent({
             required></v-text-field>
         <v-textarea v-model="entity.description" :rules="descriptionRules" label="Description"></v-textarea>
         <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type"
-            :rules="scheduleTypeRules"></v-select>
+            :rules="scheduleTypeRules" item-title="name" item-value="key"></v-select>
         <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
 
         <v-autocomplete v-model="entity.service_provider_id" :items="spStore.searchResults?.results"
@@ -117,5 +120,6 @@ export default defineComponent({
 
         <Loader v-if="store.loading"></Loader>
 
+        <pre>{{ entity }}</pre>
     </v-form>
 </template>
