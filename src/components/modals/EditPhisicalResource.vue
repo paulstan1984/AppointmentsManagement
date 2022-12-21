@@ -102,14 +102,26 @@ export default defineComponent({
         <v-text-field v-model="entity.name" @keydown.enter="Save()" :counter="100" :rules="nameRules" label="Name"
             required></v-text-field>
         <v-textarea v-model="entity.description" :rules="descriptionRules" label="Description"></v-textarea>
-        <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type"
-            :rules="scheduleTypeRules" item-title="name" item-value="key"></v-select>
+        <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type" :rules="scheduleTypeRules"
+            item-title="name" item-value="key"></v-select>
         <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
 
         <v-autocomplete v-model="entity.service_provider_id" :items="spStore.searchResults?.results"
             label="Service Provider" item-title="name" item-value="id"
             v-model:search="searchServiceProvider"></v-autocomplete>
 
+        <v-row no-gutters v-for="(e in entity.schedule_units">
+            <v-col cols="12" sm="6">
+                <v-text-field v-model="e.key" label="Unit" required></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-text-field v-model="e.value" label="Name" required></v-text-field>
+            </v-col>
+        </v-row>
+
+        Todo:
+        - schedule_units
+        - weekly_timetable
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
         </v-btn>

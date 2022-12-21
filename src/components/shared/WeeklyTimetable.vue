@@ -7,15 +7,16 @@ export default defineComponent({
     data() {
         return {
             days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+            timeTable: ''
         }
     },
 
     methods: {
-        dayliTimetable(day: string): string | undefined {
-            if (!this.tt) return undefined;
+        dayliTimetable(timetable: []): string | undefined {
             let dayTT = [];
-            for (let i = 0; i < this.tt[day].length; i = i + 2) {
-                dayTT.push(this.tt[day][i] + '-' + this.tt[day][i + 1]);
+            for (let timeinterval of timetable) {
+                //@ts-ignore
+                dayTT.push(timeinterval.start + '-' + timeinterval.end);
             }
 
             if (dayTT.length > 0) {
@@ -26,14 +27,16 @@ export default defineComponent({
         },
 
         weekTimetable(): string {
-            let retArray = [];
+            let retArray: any[] = [];
 
-            for (let day of this.days) {
+            if (!this.tt) return '';
 
-                const dailyTT = this.dayliTimetable(day);
+            for (let item of this.tt) {
+
+                const dailyTT = this.dayliTimetable(item.timetable);
 
                 if (dailyTT) {
-                    retArray.push(day + ': ' + dailyTT);
+                    retArray.push(item.day + ': ' + dailyTT);
                 }
             }
 
