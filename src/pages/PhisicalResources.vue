@@ -58,6 +58,8 @@ export default defineComponent({
 
         Cancel() {
             this.showEditModal = false;
+            this.store.resourceURL = config.PhisicalResourcesURL;
+            this.store.search();
         },
 
         Saved() {
@@ -129,7 +131,8 @@ export default defineComponent({
                                     <tr v-for="item in store.searchResults?.results">
                                         <td>{{item.name}}</td>
                                         <td>{{item.description}}</td>
-                                        <td><WeeklyTimetable :tt="item.weekly_timetable"></WeeklyTimetable></td>
+                                        <td><WeeklyTimetable :tt="item?.weekly_timetable"></WeeklyTimetable>
+                                        </td>
                                         <td>{{item.open ? 'Yes' : 'No'}}</td>
                                         <td>{{item.service_provider_name}}</td>
                                         <td>

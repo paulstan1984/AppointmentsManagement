@@ -56,7 +56,6 @@ export default defineComponent({
 
     watch: {
         searchServiceProvider(val) {
-            console.log('watch searchServiceProvider', val);
             this.spStore.search(val);
         }
     },
