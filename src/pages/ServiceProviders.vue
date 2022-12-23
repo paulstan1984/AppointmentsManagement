@@ -16,7 +16,7 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
  */
 
 // @ts-ignore
-import { entitiesStore } from '@/stores/entitiesStore';
+import { serviceProviderStore } from '@/stores/serviceProviderStore.ts';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 import config from '@/stores/environment';
@@ -35,7 +35,7 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            store: entitiesStore(),
+            store: serviceProviderStore(),
             showEditModal: false,
             selectedServiceProvider: undefined
         }
@@ -72,7 +72,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.store.resourceURL = config.ServiceProvudersURL;
+        this.appStore.serviceProviderURL = config.ServiceProvudersURL;
         this.store.search();
     }
 

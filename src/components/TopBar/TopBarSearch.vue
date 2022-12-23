@@ -1,19 +1,39 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 // @ts-ignore
-import { entitiesStore } from '@/stores/entitiesStore.ts';
+import { phisicalResourceStore } from '@/stores/phisicalresourcestore.ts';
+// @ts-ignore
+import { serviceProviderStore } from '@/stores/serviceProviderStore.ts';
+// @ts-ignore
+import { reservationStore } from '@/stores/reservationStore.ts';
+// @ts-ignore
+import { appStore } from '@/stores/appStore.ts';
+import config from '@/stores/environment';
 
 export default defineComponent({
     data() {
         return {
-            entitiesStore: entitiesStore(),
+            phisicalResourceStore: phisicalResourceStore(),
+            serviceProviderStore: serviceProviderStore(),
+            reservationStore: reservationStore(),
+            appStore: appStore(),
             keyword: ''
         }
     },
 
     methods: {
         Search() {
-            this.entitiesStore.search(this.keyword);
+            switch (this.appStore.serviceProviderURL) {
+                case config.ServiceProvudersURL:
+                    this.serviceProviderStore.search(this.keyword);
+                    break;
+                case config.PhisicalResourcesURL:
+                    this.phisicalResourceStore.search(this.keyword);
+                    break;
+                case config.ReservationsURL:
+                    this.reservationStore.search(this.keyword);
+                    break;
+            }
         }
     }
 })

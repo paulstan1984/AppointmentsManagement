@@ -4,6 +4,7 @@ export const appStore = defineStore('appState', {
 
   state: () => ({
     menuToggled: false,
+    serviceProviderURL: ''
   }),
 
   actions: {

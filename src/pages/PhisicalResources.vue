@@ -10,10 +10,11 @@ import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 import EditPhisicalResource from '@/components/modals/EditPhisicalResource.vue';
 
 // @ts-ignore
-import { entitiesStore } from '@/stores/entitiesStore';
+import { phisicalResourceStore } from '@/stores/phisicalResourceStore.ts';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 import config from '@/stores/environment';
+import { COMPARISON_BINARY_OPERATORS } from '@babel/types';
 
 export default defineComponent({
     components: {
@@ -30,7 +31,7 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            store: entitiesStore(),
+            store: phisicalResourceStore(),
             showEditModal: false,
             selectedEntity: undefined
         }
@@ -58,8 +59,6 @@ export default defineComponent({
 
         Cancel() {
             this.showEditModal = false;
-            this.store.resourceURL = config.PhisicalResourcesURL;
-            this.store.search();
         },
 
         Saved() {
@@ -69,7 +68,8 @@ export default defineComponent({
     },
 
     mounted() {
-        this.store.resourceURL = config.PhisicalResourcesURL;
+        this.appStore.serviceProviderURL = config.PhisicalResourcesURL;
+        console.log(this.appStore.serviceProviderURL);
         this.store.search();
     }
 })

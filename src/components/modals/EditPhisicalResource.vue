@@ -3,8 +3,9 @@ import { defineComponent } from 'vue'
 import Loader from '@/components/shared/Loader.vue';
 
 // @ts-ignore
-import { entitiesStore } from '@/stores/entitiesStore';
-import config from '@/stores/environment';
+import { phisicalResourceStore } from '@/stores/phisicalresourcestore.ts';
+// @ts-ignore
+import { serviceProviderStore } from '@/stores/serviceProviderStore.ts';
 
 export default defineComponent({
 
@@ -17,8 +18,8 @@ export default defineComponent({
 
     data() {
         return {
-            store: entitiesStore(),
-            spStore: entitiesStore(),
+            store: phisicalResourceStore(),
+            spStore: serviceProviderStore(),
             error: undefined,
             valid: false,
             scheduleTypes: [
@@ -84,8 +85,6 @@ export default defineComponent({
     },
 
     mounted() {
-        this.store.resourceURL = config.PhisicalResourcesURL;
-        this.spStore.resourceURL = config.ServiceProvudersURL;
         this.spStore.search();
         if (this.entity.open == 1) {
             this.entity.open = true;

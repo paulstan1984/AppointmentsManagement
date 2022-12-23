@@ -8,7 +8,7 @@ import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
 import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
 // @ts-ignore
-import { entitiesStore } from '@/stores/entitiesStore';
+import { reservationStore } from '@/stores/reservationStore.ts';
 // @ts-ignore
 import { appStore } from '@/stores/appStore.ts';
 import config from '@/stores/environment';
@@ -27,12 +27,12 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            store: entitiesStore(),
+            store: reservationStore(),
         }
     },
 
     mounted() {
-        this.store.resourceURL = config.ReservationsURL;
+        this.appStore.serviceProviderURL = config.ReservationsURL;
         this.store.search();
     }
 })

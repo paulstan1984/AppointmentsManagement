@@ -3,8 +3,7 @@ import { defineComponent } from 'vue'
 import Loader from '@/components/shared/Loader.vue';
 
 // @ts-ignore
-import { entitiesStore } from '@/stores/entitiesStore';
-import config from '@/stores/environment';
+import { serviceProviderStore } from '@/stores/serviceProviderStore.ts';
 
 export default defineComponent({
 
@@ -17,7 +16,7 @@ export default defineComponent({
 
     data() {
         return {
-            store: entitiesStore(),
+            store: serviceProviderStore(),
             error: undefined,
             valid: false,
             nameRules: [
@@ -65,10 +64,6 @@ export default defineComponent({
             });
         }
     },
-
-    mounted() {
-        this.store.resourceURL = config.ServiceProvudersURL;
-    }
 });
 </script>
 
