@@ -108,6 +108,8 @@ export default defineComponent({
             label="Service Provider" item-title="name" item-value="id"
             v-model:search="searchServiceProvider"></v-autocomplete>
 
+        <strong>Schedule Units</strong>
+
         <v-row no-gutters v-for="(e in entity.schedule_units">
             <v-col cols="12" sm="6">
                 <v-text-field v-model="e.key" label="Unit" required></v-text-field>
@@ -117,9 +119,18 @@ export default defineComponent({
             </v-col>
         </v-row>
 
-        Todo:
-        - schedule_units
-        - weekly_timetable
+        <strong>Weekly Timetable</strong>
+        <v-row no-gutters v-for="(e in entity.weekly_timetable">
+            <v-col cols="12" sm="4">
+                <v-label>{{ e.day }}</v-label>
+            </v-col>
+            <v-col cols="12" sm="8">
+                <v-row no-gutters v-for="(t in e.timetable">
+                    <v-text-field type="number" v-model="t.start" label="Start" required></v-text-field>
+                    <v-text-field type="number" v-model="t.end" label="End" required></v-text-field>
+                </v-row>
+            </v-col>
+        </v-row>
         <v-btn color="error" class="mr-4" @click="$emit('close')">
             Cancel
         </v-btn>
@@ -130,6 +141,5 @@ export default defineComponent({
 
         <Loader v-if="store.loading"></Loader>
 
-        <pre>{{ entity }}</pre>
     </v-form>
 </template>
