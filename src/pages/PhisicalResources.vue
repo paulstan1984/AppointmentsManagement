@@ -69,7 +69,6 @@ export default defineComponent({
 
     mounted() {
         this.appStore.serviceProviderURL = config.PhisicalResourcesURL;
-        console.log(this.appStore.serviceProviderURL);
         this.store.search();
     }
 })
