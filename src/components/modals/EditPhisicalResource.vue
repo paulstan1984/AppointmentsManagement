@@ -45,12 +45,13 @@ export default defineComponent({
                 // @ts-ignore
                 (v: any) => !this.error?.description || this.error.description[0],
             ],
-            emailRules: [
-                (v: any) => (v || '').length <= 200 || 'A maximum of 200 characters is allowed.',
-                (v: any) => !!v || 'E-mail is required',
-                (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
+            openRules: [
                 // @ts-ignore
-                (v: any) => !this.error?.email || this.error.emal[0],
+                (v: any) => !this.error?.open || this.error.open[0],
+            ],
+            serviceProviderRules: [
+                // @ts-ignore
+                (v: any) => !this.error?.service_provider_id || this.error.service_provider_id[0],
             ],
         }
     },
@@ -103,10 +104,10 @@ export default defineComponent({
         <v-textarea v-model="entity.description" :rules="descriptionRules" label="Description"></v-textarea>
         <v-select v-model="entity.schedule_type" :items="scheduleTypes" label="Schedule Type" :rules="scheduleTypeRules"
             item-title="name" item-value="key"></v-select>
-        <v-checkbox v-model="entity.open" label="Open"></v-checkbox>
+        <v-checkbox v-model="entity.open" label="Open" :rules="openRules"></v-checkbox>
 
         <v-autocomplete v-model="entity.service_provider_id" :items="spStore.searchResults?.results"
-            label="Service Provider" item-title="name" item-value="id"
+            label="Service Provider" item-title="name" item-value="id" :rules="serviceProviderRules"
             v-model:search="searchServiceProvider"></v-autocomplete>
 
         <strong>Schedule Units</strong>
