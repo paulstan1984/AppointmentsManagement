@@ -83,6 +83,22 @@ export default defineComponent({
                     this.$refs.form.validate();
                 }
             });
+        },
+
+        AddScheduleUnit() {
+            this.entity.schedule_units.push({ key: '', value: '' })
+        },
+
+        DeleteScheduleUnit(su: any) {
+
+        },
+
+        AddTimetable(day: any) {
+
+        },
+
+        DeleteTimetable(t: any) {
+
         }
     },
 
@@ -112,12 +128,25 @@ export default defineComponent({
 
         <strong>Schedule Units</strong>
 
+        <v-row>
+            <v-col>
+                <v-btn color="success" class="mr-4 float-end" @click="AddScheduleUnit()">
+                    <i class="fa fa-plus"></i>
+                </v-btn>
+            </v-col>
+
+        </v-row>
         <v-row no-gutters v-for="(e in entity.schedule_units">
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="5">
                 <v-text-field v-model="e.key" label="Unit" required></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="5">
                 <v-text-field v-model="e.value" label="Name" required></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="2">
+                <v-btn color="error" class="ml-4 mt-3" @click="DeleteScheduleUnit(e)">
+                    <i class="fa fa-trash"></i>
+                </v-btn>
             </v-col>
         </v-row>
 
@@ -125,22 +154,31 @@ export default defineComponent({
         <v-row no-gutters v-for="(e in entity.weekly_timetable">
             <v-col cols="12" sm="4">
                 <v-label>{{ e.day }}</v-label>
+
+                <v-btn color="success" class="ml-4 mt-3" @click="AddTimetable(e.day)">
+                    <i class="fa fa-plus"></i>
+                </v-btn>
             </v-col>
             <v-col cols="12" sm="8">
                 <v-row no-gutters v-for="(t in e.timetable">
                     <v-text-field type="number" v-model="t.start" label="Start" required></v-text-field>
                     <v-text-field type="number" v-model="t.end" label="End" required></v-text-field>
+                    <v-btn color="error" class="ml-4 mt-3" @click="DeleteTimetable(t)">
+                        <i class="fa fa-trash"></i>
+                    </v-btn>
                 </v-row>
             </v-col>
         </v-row>
-        <v-btn color="error" class="mr-4" @click="$emit('close')">
-            Cancel
-        </v-btn>
 
-        <v-btn color="success" class="mr-4" @click="Save()">
-            Save
-        </v-btn>
+        <v-row class="mt-5">
+            <v-btn color="error" class="mr-4" @click="$emit('close')">
+                Cancel
+            </v-btn>
 
+            <v-btn color="success" class="mr-4" @click="Save()">
+                Save
+            </v-btn>
+        </v-row>
         <Loader v-if="store.loading"></Loader>
 
     </v-form>
