@@ -24,6 +24,11 @@ export default defineComponent({
             valid: false,
             service_providers: [],
             searchServiceProvider: '',
+            reservationStates: [
+                { key: 'Pending', name: 'Pending' },
+                { key: 'Canceled', name: 'Canceled' },
+                { key: 'Confirmed', name: 'Confirmed' }
+            ],
             nameRules: [
                 (v: any) => (v || '').length <= 50 || 'A maximum of 50 characters is allowed.',
                 (v: any) => !!v || 'Name is required',
@@ -41,6 +46,11 @@ export default defineComponent({
                 (v: any) => (v || '').length <= 200 || 'A maximum of 200 characters is allowed.',
                 (v: any) => !!v || 'E-mail is required',
                 (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
+                // @ts-ignore
+                (v: any) => !this.error?.email || this.error.emal[0],
+            ],
+            dateRules: [
+                (v: any) => !!v || 'E-mail is required',
                 // @ts-ignore
                 (v: any) => !this.error?.email || this.error.emal[0],
             ],
@@ -101,10 +111,13 @@ export default defineComponent({
             label="Client Email" required></v-text-field>
         <v-text-field v-model="entity.client_phone" @keydown.enter="Save()" :counter="100" :rules="phoneRules"
             label="Client Phone" required></v-text-field>
-
+        <v-text-field type="datetime-local" v-model="entity.start_date" :rules="dateRules" label="Start Time"
+            required></v-text-field>
         <v-autocomplete v-model="entity.service_provider_id" :items="spStore.searchResults?.results"
             label="Service Provider" item-title="name" item-value="id" :rules="serviceProviderRules"
             v-model:search="searchServiceProvider"></v-autocomplete>
+        <v-select v-model="entity.state" :items="reservationStates" label="State" :rules="stateRules" item-title="name"
+            item-value="key"></v-select>
 
         <v-row class="mt-5">
             <v-btn color="error" class="mr-4" @click="$emit('close')">
