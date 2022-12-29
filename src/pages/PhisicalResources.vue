@@ -39,6 +39,17 @@ export default defineComponent({
 
     methods: {
         Edit(s: any) {
+            if (!s.weekly_timetable) {
+                s.weekly_timetable = [
+                    { day: 'Mo', timetable: [] },
+                    { day: 'Tu', timetable: [] },
+                    { day: 'We', timetable: [] },
+                    { day: 'Th', timetable: [] },
+                    { day: 'Fr', timetable: [] },
+                    { day: 'Sa', timetable: [] },
+                    { day: 'Su', timetable: [] }
+                ];
+            }
             this.selectedEntity = Object.assign({}, s);
             this.showEditModal = true;
         },
@@ -98,8 +109,16 @@ export default defineComponent({
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Phisical Resources</h1>
-                        <a href="#" @click="store.search()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-sync-alt"></i> Reload</a>
+
+                        <div class="d-sm-flex justify-content-end">
+                            <a @click="Edit({})"
+                                class="ms-2 d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fas fa-plus"></i> Add</a>
+
+                            <a href="#" @click="store.search()"
+                                class="ms-2 d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fas fa-sync-alt"></i> Reload</a>
+                        </div>
                     </div>
 
                     <!-- Content Row -->
@@ -128,12 +147,13 @@ export default defineComponent({
                                 </tfoot>
                                 <tbody>
                                     <tr v-for="item in store.searchResults?.results">
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.description}}</td>
-                                        <td><WeeklyTimetable :tt="item?.weekly_timetable"></WeeklyTimetable>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.description }}</td>
+                                        <td>
+                                            <WeeklyTimetable :tt="item?.weekly_timetable"></WeeklyTimetable>
                                         </td>
-                                        <td>{{item.open ? 'Yes' : 'No'}}</td>
-                                        <td>{{item.service_provider_name}}</td>
+                                        <td>{{ item.open ? 'Yes' : 'No' }}</td>
+                                        <td>{{ item.service_provider_name }}</td>
                                         <td>
                                             <a class="btn btn-primary" @click="Edit(item)"><i
                                                     class="fas fa-edit">Edit</i></a>

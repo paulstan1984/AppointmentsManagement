@@ -86,19 +86,31 @@ export default defineComponent({
         },
 
         AddScheduleUnit() {
+            if (!this.entity.schedule_units) {
+                this.entity.schedule_units = [];
+            }
             this.entity.schedule_units.push({ key: '', value: '' })
         },
 
         DeleteScheduleUnit(su: any) {
-
+            const index = this.entity.schedule_units.indexOf((e: any) => e.key == su.key);
+            if (index != -1) {
+                this.entity.schedule_units.splice(index, 1);
+            }
         },
 
-        AddTimetable(day: any) {
-
+        AddTimetable(t: any) {
+            if (!t.timetable) {
+                t.timetable = [];
+            }
+            t.timetable?.push({ start: '', end: '' });
         },
 
-        DeleteTimetable(t: any) {
-
+        DeleteTimetable(t: any, el: any) {
+            const index = t.timetable.findIndex((e: any) => e.start == el.start);
+            if (index != -1) {
+                t.timetable.splice(index, 1);
+            }
         }
     },
 
@@ -127,7 +139,6 @@ export default defineComponent({
             v-model:search="searchServiceProvider"></v-autocomplete>
 
         <strong>Schedule Units</strong>
-
         <v-row>
             <v-col>
                 <v-btn color="success" class="mr-4 float-end" @click="AddScheduleUnit()">
@@ -155,7 +166,7 @@ export default defineComponent({
             <v-col cols="12" sm="4">
                 <v-label>{{ e.day }}</v-label>
 
-                <v-btn color="success" class="ml-4 mt-3" @click="AddTimetable(e.day)">
+                <v-btn color="success" class="ml-4 mt-3" @click="AddTimetable(e)">
                     <i class="fa fa-plus"></i>
                 </v-btn>
             </v-col>
@@ -163,7 +174,7 @@ export default defineComponent({
                 <v-row no-gutters v-for="(t in e.timetable">
                     <v-text-field type="number" v-model="t.start" label="Start" required></v-text-field>
                     <v-text-field type="number" v-model="t.end" label="End" required></v-text-field>
-                    <v-btn color="error" class="ml-4 mt-3" @click="DeleteTimetable(t)">
+                    <v-btn color="error" class="ml-4 mt-3" @click="DeleteTimetable(e, t)">
                         <i class="fa fa-trash"></i>
                     </v-btn>
                 </v-row>
