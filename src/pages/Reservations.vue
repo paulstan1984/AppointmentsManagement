@@ -7,6 +7,8 @@ import ScrollTop from '@/components/Footer/ScrollTop.vue';
 import Loader from '@/components/shared/Loader.vue';
 import ErrorModal from '@/components/shared/ErrorModal.vue';
 import WeeklyTimetable from '@/components/shared/WeeklyTimetable.vue';
+import EditReservation from '@/components/modals/EditReservation.vue';
+
 // @ts-ignore
 import { reservationStore } from '@/stores/reservationStore.ts';
 // @ts-ignore
@@ -21,13 +23,46 @@ export default defineComponent({
         ScrollTop,
         Loader,
         ErrorModal,
-        WeeklyTimetable
+        WeeklyTimetable,
+        EditReservation
     },
 
     data() {
         return {
             appStore: appStore(),
             store: reservationStore(),
+            showEditModal: false,
+            selectedReservation: undefined
+        }
+    },
+
+    methods: {
+        Edit(s: any) {
+            this.selectedReservation = Object.assign({}, s);
+            this.showEditModal = true;
+        },
+
+        Delete(s: any) {
+            if (confirm('Are you sure?')) {
+                this.store.delete(s, (success: boolean, data: any) => {
+                    if (success) {
+                        this.store.search();
+                    } else {
+                        this.store.error = data;
+                        //@ts-ignore 
+                        setTimeout(() => delete this.store.error, config.errorDisplayTimeout);
+                    }
+                });
+            }
+        },
+
+        Cancel() {
+            this.showEditModal = false;
+        },
+
+        Saved() {
+            this.showEditModal = false;
+            this.store.search();
         }
     },
 
@@ -100,16 +135,21 @@ export default defineComponent({
                                             </div>
                                         </td>
                                         <td>{{ item.state }}</td>
-                                        <td>{{ item.schedule_unit }} {{item.phisical_resource?.schedule_type}} from
-                                            <br />{{
-                                            item.start_time }}</td>
+                                        <td>{{ item.schedule_unit }} {{ item.phisical_resource?.schedule_type }} from
+                                            <br />{{ item.start_time }}
+                                        </td>
                                         <td>
                                             {{ item.phisical_resource?.name }}
 
                                             <WeeklyTimetable :tt="item.phisical_resource?.weekly_timetable">
                                             </WeeklyTimetable>
                                         </td>
-                                        <td>Edit</td>
+                                        <td>
+                                            <a class="btn btn-primary" @click="Edit(item)"><i
+                                                    class="fas fa-edit">Edit</i></a>
+                                            <a class="ms-2 btn btn-danger"><i class="fas fa-trash"
+                                                    @click="Delete(item)">Delete</i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -137,4 +177,11 @@ export default defineComponent({
 
     <Loader v-if="store.loading"></Loader>
     <ErrorModal v-if="store.error" :error="store.error"></ErrorModal>
+
+    <v-dialog v-model="showEditModal">
+        <v-card class="p-3">
+            <EditReservation :entity="selectedReservation" @close="Cancel()" @saved="Saved()">
+            </EditReservation>
+        </v-card>
+    </v-dialog>
 </template>
