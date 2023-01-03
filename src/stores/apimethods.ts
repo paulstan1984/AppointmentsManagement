@@ -4,11 +4,15 @@ import config from '@/stores/environment.ts';
 
 export class APIMethods {
 
-    public static search(entitiesStore: any, keyword = undefined) {
+    public static search(entitiesStore: any, keyword = undefined, additional_parameters: any[] = []) {
 
         let urlAddition = '';
         if (keyword && (keyword as string).length > 0) {
             urlAddition = '/' + keyword;
+        }
+        
+        for(let p of additional_parameters){
+            urlAddition = urlAddition + '/' + p;
         }
 
         entitiesStore.loading = true;

@@ -3,9 +3,9 @@ import { defineComponent } from 'vue'
 import Loader from '@/components/shared/Loader.vue';
 
 // @ts-ignore
-import { phisicalResourceStore } from '@/stores/phisicalresourcestore.ts';
+import { reservationStore } from '@/stores/reservationstore.ts';
 // @ts-ignore
-import { serviceProviderStore } from '@/stores/serviceProviderStore.ts';
+import { phisicalResourceStore } from '@/stores/phisicalResourceStore.ts';
 
 export default defineComponent({
 
@@ -18,12 +18,12 @@ export default defineComponent({
 
     data() {
         return {
-            store: phisicalResourceStore(),
-            spStore: serviceProviderStore(),
+            store: reservationStore(),
+            prStore: phisicalResourceStore(),
             error: undefined,
             valid: false,
             service_providers: [],
-            searchServiceProvider: '',
+            searchPhisicalResource: '',
             reservationStates: [
                 { key: 'Pending', name: 'Pending' },
                 { key: 'Canceled', name: 'Canceled' },
@@ -50,21 +50,29 @@ export default defineComponent({
                 (v: any) => !this.error?.email || this.error.emal[0],
             ],
             dateRules: [
-                (v: any) => !!v || 'E-mail is required',
+                (v: any) => !!v || 'Date is required',
+                // @ts-ignore
+                (v: any) => !this.error?.email || this.error.emal[0],
+            ],
+            scheduleUnitRules: [
+                (v: any) => !!v || 'Schedule unit is required',
                 // @ts-ignore
                 (v: any) => !this.error?.email || this.error.emal[0],
             ],
 
-            serviceProviderRules: [
+            phisicalResourceRules: [
                 // @ts-ignore
-                (v: any) => !this.error?.service_provider_id || this.error.service_provider_id[0],
+                (v: any) => !this.error?.phisical_resource_id || this.error.phisical_resource_id[0],
             ],
         }
     },
 
     watch: {
-        searchServiceProvider(val) {
-            this.spStore.search(val);
+        searchPhisicalResource(val) {
+            if (!val || val.length == 0) {
+                val = this.entity.phisical_resource_name;
+            }
+            this.prStore.searchProviderResource(this.entity.phisical_resource.service_provider_id, val);
         }
     },
 
@@ -93,7 +101,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.spStore.search();
+        this.prStore.searchProviderResource(this.entity.phisical_resource.service_provider_id, this.entity.phisical_resource_name);
         if (this.entity.open == 1) {
             this.entity.open = true;
         } else {
@@ -111,11 +119,16 @@ export default defineComponent({
             label="Client Email" required></v-text-field>
         <v-text-field v-model="entity.client_phone" @keydown.enter="Save()" :counter="100" :rules="phoneRules"
             label="Client Phone" required></v-text-field>
-        <v-text-field type="datetime-local" v-model="entity.start_date" :rules="dateRules" label="Start Time"
+        <v-text-field type="datetime-local" v-model="entity.start_time" :rules="dateRules" label="Start Time"
             required></v-text-field>
-        <v-autocomplete v-model="entity.service_provider_id" :items="spStore.searchResults?.results"
-            label="Service Provider" item-title="name" item-value="id" :rules="serviceProviderRules"
-            v-model:search="searchServiceProvider"></v-autocomplete>
+
+        <v-text-field v-model="entity.schedule_unit" @keydown.enter="Save()" :rules="scheduleUnitRules"
+            :label="entity.phisical_resource.schedule_type" required></v-text-field>
+
+        <v-autocomplete v-model="entity.phisical_resource_id" :items="prStore.searchResults?.results"
+            label="Phisical Resource" item-title="name" item-value="id" :rules="phisicalResourceRules"
+            v-model:search="searchPhisicalResource"></v-autocomplete>
+
         <v-select v-model="entity.state" :items="reservationStates" label="State" :rules="stateRules" item-title="name"
             item-value="key"></v-select>
 

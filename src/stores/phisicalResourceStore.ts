@@ -13,6 +13,12 @@ export const phisicalResourceStore = defineStore('phisicalResourceStore', {
   }),
 
   actions: {
+
+    searchProviderResource(service_provider_id: number, keyword = undefined) {
+      console.log(keyword);
+      APIMethods.search(this, keyword, [service_provider_id]);
+    },
+
     search(keyword = undefined) {
 
       APIMethods.search(this, keyword);

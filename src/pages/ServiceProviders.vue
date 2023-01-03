@@ -10,7 +10,7 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 /**
  * Todo:
- *  reservations CRUD
+ *  test-> reservations CRUD
  *  login / logout
  */
 
