@@ -139,10 +139,8 @@ export default defineComponent({
                                             <br />{{ item.start_time }}
                                         </td>
                                         <td>
+                                            {{ item.phisical_resource?.service_provider_name }}<br/>
                                             {{ item.phisical_resource?.name }}
-
-                                            <WeeklyTimetable :tt="item.phisical_resource?.weekly_timetable">
-                                            </WeeklyTimetable>
                                         </td>
                                         <td>
                                             <a class="btn btn-primary" @click="Edit(item)"><i
