@@ -10,7 +10,7 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 /**
  * Todo:
- *  login / logout
+ *  login / logout -> api + ui 
  */
 
 // @ts-ignore
