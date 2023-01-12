@@ -37,7 +37,6 @@ export default defineComponent({
             this.appStore.login(s, (success: boolean, data: any) => {
                 if (success) {
                     this.appStore.authToken = data;
-                    console.log(this.appStore.authToken);
                     this.$router.push('/');
                 } else {
                     this.error = data;

@@ -1,3 +1,31 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+// @ts-ignore
+import { appStore } from '@/stores/appStore.ts';
+import Loader from '@/components/shared/Loader.vue';
+
+export default defineComponent({
+    components: {
+        Loader
+    },
+
+    data() {
+        return {
+            appStore: appStore()
+        }
+    },
+
+    methods: {
+        Logout() {
+            const s = { token: this.appStore.authToken };
+            this.appStore.logout(s, (success: boolean, data: any) => {
+                this.$router.push('/login');
+            });
+        },
+    },
+})
+</script>
+
 <template>
 
     <li class="nav-item dropdown no-arrow">
@@ -38,7 +66,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-primary" @click="Logout()">Logout</button>
                 </div>
             </div>
         </div>
