@@ -4,21 +4,29 @@ import config from '@/stores/environment.ts';
 
 export class APIMethods {
 
+    public static authToken = localStorage.getItem(config.authToken);
+
+    public static getHeaders() {
+        return {
+            'Authorization': localStorage.getItem(config.authToken)
+        }
+    }
+
     public static search(entitiesStore: any, keyword = undefined, additional_parameters: any[] = []) {
 
         let urlAddition = '';
         if (keyword && (keyword as string).length > 0) {
             urlAddition = '/' + keyword;
         }
-        
-        for(let p of additional_parameters){
+
+        for (let p of additional_parameters) {
             urlAddition = urlAddition + '/' + p;
         }
 
         entitiesStore.loading = true;
         delete entitiesStore.error;
         axios
-            .get(config.APIURL + entitiesStore.resourceURL + '-search/1' + urlAddition)
+            .get(config.APIURL + entitiesStore.resourceURL + '-search/1' + urlAddition, { headers: APIMethods.getHeaders() })
             .then(data => entitiesStore.searchResults = data.data)
             .catch(err => entitiesStore.error = err)
             .finally(() => {
@@ -34,13 +42,13 @@ export class APIMethods {
 
         if (item.id > 0) {
             apiCall = axios
-                .put(config.APIURL + entitiesStore.resourceURL + '/' + item.id, item);
+                .put(config.APIURL + entitiesStore.resourceURL + '/' + item.id, item, { headers: APIMethods.getHeaders() });
         } else {
             apiCall = axios
-                .post(config.APIURL + entitiesStore.resourceURL, item);
+                .post(config.APIURL + entitiesStore.resourceURL, item, { headers: APIMethods.getHeaders() });
         }
         apiCall.then(data => cb(true, data.data))
-            .catch(err => cb(false, err.response.data))
+            .catch(err => cb(false, err?.response?.data))
             .finally(() => {
                 entitiesStore.loading = false;
             });
@@ -50,10 +58,10 @@ export class APIMethods {
         entitiesStore.loading = true;
         delete entitiesStore.error;
         let apiCall = axios
-            .delete(config.APIURL + entitiesStore.resourceURL + '/' + item.id);
+            .delete(config.APIURL + entitiesStore.resourceURL + '/' + item.id, { headers: APIMethods.getHeaders() });
 
         apiCall.then(data => cb(true, data.data))
-            .catch(err => cb(false, err.response.data))
+            .catch(err => cb(false, err?.response?.data))
             .finally(() => {
                 entitiesStore.loading = false;
             });

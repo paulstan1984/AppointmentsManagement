@@ -12,7 +12,7 @@ export const appStore = defineStore('appState', {
     error: undefined,
     loading: false,
 
-    authToken: undefined,
+    authToken: localStorage.getItem(config.authToken),
   }),
 
   actions: {
@@ -27,7 +27,10 @@ export const appStore = defineStore('appState', {
 
       axios
         .post(config.APIURL + 'login', data)
-        .then(data => cb(true, data.data))
+        .then(data => {
+          localStorage.setItem(config.authToken, data.data);
+          cb(true, data.data);
+        })
         .catch(err => cb(false, err.response.data))
         .finally(() => {
           this.loading = false;
@@ -40,8 +43,11 @@ export const appStore = defineStore('appState', {
 
       axios
         .post(config.APIURL + 'logout', data)
-        .then(data => cb(true, data.data))
-        .catch(err => cb(false, err.response.data))
+        .then(data => {
+          localStorage.deleteItem(config.authToken);
+          cb(true, data.data);
+        })
+        .catch(err => cb(false, err?.response?.data))
         .finally(() => {
           this.loading = false;
         });

@@ -14,7 +14,6 @@ export const reservationStore = defineStore('reservationStore', {
 
   actions: {
     search(keyword = undefined) {
-
       APIMethods.search(this, keyword);
     },
 

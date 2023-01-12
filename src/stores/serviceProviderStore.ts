@@ -14,7 +14,6 @@ export const serviceProviderStore = defineStore('serviceProviderStore', {
 
   actions: {
     search(keyword = undefined) {
-
       APIMethods.search(this, keyword);
     },
 

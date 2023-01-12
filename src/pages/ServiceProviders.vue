@@ -10,8 +10,8 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 /**
  * Todo:
- *  keep access token in local storage
- *  send access token as HTTP header
+ * map between users and providers / admin -> this can be done at the database level
+ * continue with the public app
  */
 
 // @ts-ignore

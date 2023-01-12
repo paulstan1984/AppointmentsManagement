@@ -4,7 +4,8 @@ const config = {
     ServiceProvudersURL: 'service-providers',
     PhisicalResourcesURL: 'phisical-resources',
     ReservationsURL: 'reservations',
-    errorDisplayTimeout: 2 * 1000
+    errorDisplayTimeout: 2 * 1000,
+    authToken: 'authToken'
 
 }
 
