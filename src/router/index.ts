@@ -3,6 +3,7 @@ import HomeView from '@/pages/HomeView.vue'
 import ServiceProviders from '@/pages/ServiceProviders.vue'
 import PhisicalResources from '@/pages/PhisicalResources.vue'
 import Reservations from '@/pages/Reservations.vue'
+import Login from '@/pages/Login.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/reservations',
       name: 'reservations',
       component: Reservations
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
   ]
 })
