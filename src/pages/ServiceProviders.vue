@@ -10,7 +10,8 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 /**
  * Todo:
- *  login / logout -> api + ui 
+ *  keep access token in local storage
+ *  send access token as HTTP header
  */
 
 // @ts-ignore
