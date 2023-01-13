@@ -14,7 +14,7 @@ export default defineComponent({
             appStore: appStore(),
             error: undefined,
             email: undefined,
-            password: undefined,
+            showEditModal: false,
             valid: false,
             emailRules: [
                 (v: any) => (v || '').length <= 200 || 'A maximum of 200 characters is allowed.',
@@ -23,23 +23,19 @@ export default defineComponent({
                 // @ts-ignore
                 (v: any) => !this.error?.email || this.error.email[0],
             ],
-            passwordRules: [
-                (v: any) => !!v || 'Password is required',
-                // @ts-ignore
-                (v: any) => !this.error?.password || this.error.password[0],
-            ],
         }
     },
 
     methods: {
-        Login() {
-            const s = { email: this.email, password: this.password };
-            this.appStore.login(s, (success: boolean, data: any) => {
+        ForgotPassword() {
+            const s = { email: this.email };
+            this.appStore.forgotPassword(s, (success: boolean, data: any) => {
                 if (success) {
-                    this.appStore.authToken = data;
-                    this.$router.push('/');
+                    alert('Your received an email with the password reset link.');
+                    this.$router.push('/login');
                 } else {
                     this.error = data;
+                    console.log(this.error);
                     //@ts-ignore 
                     this.$refs.form.validate();
                 }
@@ -67,28 +63,25 @@ export default defineComponent({
                                     <div class="p-5">
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Appointments Management</h1>
-                                            <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">Forgot Password</h1>
                                         </div>
                                         <v-form ref="form" v-model="valid" class="user">
                                             <div class="form-group">
-                                                <v-text-field v-model="email" @keydown.enter="Login()" :counter="200"
-                                                    :rules="emailRules" label="Email" required></v-text-field>
-                                            </div>
-                                            <div class="form-group">
-                                                <v-text-field type="password" v-model="password" @keydown.enter="Login()" :counter="200"
-                                                    :rules="passwordRules" label="Password" required></v-text-field>
+                                                <v-text-field v-model="email" @keydown.enter="ForgotPassword()"
+                                                    :counter="200" :rules="emailRules" label="Email"
+                                                    required></v-text-field>
                                             </div>
 
                                             <v-btn color="success" class="btn btn-primary btn-user btn-block"
-                                                @click="Login()">
-                                                Login
+                                                @click="ForgotPassword()">
+                                                Submit
                                             </v-btn>
 
                                         </v-form>
 
                                         <hr>
                                         <div class="text-center">
-                                            <router-link :to="{ name: 'forgotpassword' }" :class="['small']">Forgot Password?</router-link>
+                                            <router-link :to="{ name: 'login' }" :class="['small']">Back to login</router-link>
                                         </div>
                                     </div>
                                 </div>
@@ -103,4 +96,5 @@ export default defineComponent({
             </div>
         </div>
     </div>
+
 </template>

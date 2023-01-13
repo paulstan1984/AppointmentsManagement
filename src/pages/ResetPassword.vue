@@ -13,16 +13,9 @@ export default defineComponent({
         return {
             appStore: appStore(),
             error: undefined,
-            email: undefined,
+            remember_token: 'c013ec104c17ee72fb6116eca91930d8',
             password: undefined,
             valid: false,
-            emailRules: [
-                (v: any) => (v || '').length <= 200 || 'A maximum of 200 characters is allowed.',
-                (v: any) => !!v || 'E-mail is required',
-                (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
-                // @ts-ignore
-                (v: any) => !this.error?.email || this.error.email[0],
-            ],
             passwordRules: [
                 (v: any) => !!v || 'Password is required',
                 // @ts-ignore
@@ -32,12 +25,11 @@ export default defineComponent({
     },
 
     methods: {
-        Login() {
-            const s = { email: this.email, password: this.password };
-            this.appStore.login(s, (success: boolean, data: any) => {
+        ResetPassword() {
+            const s = { remember_token: this.remember_token, password: this.password };
+            this.appStore.resetPassword(s, (success: boolean, data: any) => {
                 if (success) {
-                    this.appStore.authToken = data;
-                    this.$router.push('/');
+                    this.$router.push('/login');
                 } else {
                     this.error = data;
                     //@ts-ignore 
@@ -67,28 +59,24 @@ export default defineComponent({
                                     <div class="p-5">
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Appointments Management</h1>
-                                            <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">Reset Password</h1>
                                         </div>
                                         <v-form ref="form" v-model="valid" class="user">
                                             <div class="form-group">
-                                                <v-text-field v-model="email" @keydown.enter="Login()" :counter="200"
-                                                    :rules="emailRules" label="Email" required></v-text-field>
-                                            </div>
-                                            <div class="form-group">
-                                                <v-text-field type="password" v-model="password" @keydown.enter="Login()" :counter="200"
+                                                <v-text-field type="password" v-model="password" @keydown.enter="ResetPassword()" :counter="200"
                                                     :rules="passwordRules" label="Password" required></v-text-field>
                                             </div>
 
                                             <v-btn color="success" class="btn btn-primary btn-user btn-block"
-                                                @click="Login()">
-                                                Login
+                                                @click="ResetPassword()">
+                                                Reset Password
                                             </v-btn>
 
                                         </v-form>
 
                                         <hr>
                                         <div class="text-center">
-                                            <router-link :to="{ name: 'forgotpassword' }" :class="['small']">Forgot Password?</router-link>
+                                            <router-link :to="{ name: 'login' }" :class="['small']">Back to login</router-link>
                                         </div>
                                     </div>
                                 </div>

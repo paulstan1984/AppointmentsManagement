@@ -47,17 +47,17 @@ export default defineComponent({
                 (v: any) => !!v || 'E-mail is required',
                 (v: any) => /.+@.+/.test(v) || 'E-mail must be valid',
                 // @ts-ignore
-                (v: any) => !this.error?.email || this.error.emal[0],
+                (v: any) => !this.error?.email || this.error.email[0],
             ],
             dateRules: [
                 (v: any) => !!v || 'Date is required',
                 // @ts-ignore
-                (v: any) => !this.error?.email || this.error.emal[0],
+                (v: any) => !this.error?.email || this.error.email[0],
             ],
             scheduleUnitRules: [
                 (v: any) => !!v || 'Schedule unit is required',
                 // @ts-ignore
-                (v: any) => !this.error?.email || this.error.emal[0],
+                (v: any) => !this.error?.email || this.error.email[0],
             ],
 
             phisicalResourceRules: [

@@ -4,6 +4,8 @@ import ServiceProviders from '@/pages/ServiceProviders.vue'
 import PhisicalResources from '@/pages/PhisicalResources.vue'
 import Reservations from '@/pages/Reservations.vue'
 import Login from '@/pages/Login.vue'
+import ForgotPassword from '@/pages/ForgotPassword.vue'
+import ResetPassword from '@/pages/ResetPassword.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +34,18 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+
+    {
+      path: '/forgot-password',
+      name: 'forgotpassword',
+      component: ForgotPassword
+    },
+
+    {
+      path: '/reset-password',
+      name: 'resetpassword',
+      component: ResetPassword
     },
   ]
 })
