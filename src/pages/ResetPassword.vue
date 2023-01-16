@@ -13,7 +13,6 @@ export default defineComponent({
         return {
             appStore: appStore(),
             error: undefined,
-            remember_token: 'c013ec104c17ee72fb6116eca91930d8',
             password: undefined,
             valid: false,
             passwordRules: [
@@ -22,6 +21,13 @@ export default defineComponent({
                 (v: any) => !this.error?.password || this.error.password[0],
             ],
         }
+    },
+
+    computed: {
+        remember_token() {
+            // We will see what `params` is shortly
+            return this.$route.params.remember_token
+        },
     },
 
     methods: {
@@ -63,7 +69,8 @@ export default defineComponent({
                                         </div>
                                         <v-form ref="form" v-model="valid" class="user">
                                             <div class="form-group">
-                                                <v-text-field type="password" v-model="password" @keydown.enter="ResetPassword()" :counter="200"
+                                                <v-text-field type="password" v-model="password"
+                                                    @keydown.enter="ResetPassword()" :counter="200"
                                                     :rules="passwordRules" label="Password" required></v-text-field>
                                             </div>
 
@@ -76,7 +83,8 @@ export default defineComponent({
 
                                         <hr>
                                         <div class="text-center">
-                                            <router-link :to="{ name: 'login' }" :class="['small']">Back to login</router-link>
+                                            <router-link :to="{ name: 'login' }" :class="['small']">Back to
+                                                login</router-link>
                                         </div>
                                     </div>
                                 </div>

@@ -11,7 +11,6 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 /**
  * Todo:
  * map between users and providers / admin -> this can be done at the database level
- * send the email notification in the forgot password api method
  * handle error: 401, 403: logout and redirect to login
  * public app: make reservation
  * admin app: approve or cancel reservation
