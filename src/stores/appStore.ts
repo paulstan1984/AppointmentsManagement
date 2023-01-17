@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios';
 // @ts-ignore
 import config from '@/stores/environment.ts';
+import { APIMethods } from './apimethods';
 
 export const appStore = defineStore('appState', {
 
@@ -74,6 +75,21 @@ export const appStore = defineStore('appState', {
 
       axios
         .post(config.APIURL + 'reset-password', data)
+        .then(data => {
+          cb(true, data.data);
+        })
+        .catch(err => cb(false, err?.response?.data))
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+
+    profile(cb: (success: boolean, data: any) => void) {
+      this.loading = true;
+      delete this.error;
+
+      axios
+        .get(config.APIURL + 'profile', { headers: APIMethods.getHeaders() })
         .then(data => {
           cb(true, data.data);
         })

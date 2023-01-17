@@ -11,7 +11,8 @@ export default defineComponent({
 
     data() {
         return {
-            appStore: appStore()
+            appStore: appStore(),
+            profile: ''
         }
     },
 
@@ -23,6 +24,14 @@ export default defineComponent({
             });
         },
     },
+
+    mounted() {
+        this.appStore.profile(function (success: boolean, data: any) {
+            if (success) {
+                this.profile = data;
+            }
+        })
+    }
 })
 </script>
 
