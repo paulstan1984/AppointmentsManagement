@@ -10,7 +10,7 @@ export default defineComponent({
 
     data() {
         return {
-            state: appStore()
+            appStore: appStore()
         }
     },
 })
@@ -18,7 +18,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <ul :class="{ toggled: state.menuToggled, 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion': true }">
+    <ul :class="{ toggled: appStore.menuToggled, 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion': true }">
 
         <Logo></Logo>
 
@@ -26,12 +26,12 @@ export default defineComponent({
         <hr class="sidebar-divider">
 
         <!-- Heading -->
-        <div class="sidebar-heading">
+        <div class="sidebar-heading" v-if="appStore.profile?.role=='admin'">
             Admin area
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item" v-if="appStore.profile?.role=='admin'">
             <router-link :to="{ name: 'providers' }" :class="['nav-link']">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Service Providers</span>
@@ -39,12 +39,7 @@ export default defineComponent({
         </li>
 
         <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Logged in service provider
-        </div>
+        <hr class="sidebar-divider" v-if="appStore.profile?.role=='admin'">
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">

@@ -12,7 +12,6 @@ export default defineComponent({
     data() {
         return {
             appStore: appStore(),
-            profile: ''
         }
     },
 
@@ -26,11 +25,9 @@ export default defineComponent({
     },
 
     mounted() {
-        this.appStore.profile(function (success: boolean, data: any) {
-            if (success) {
-                this.profile = data;
-            }
-        })
+        if (!this.appStore.profile) {
+            this.appStore.getProfile(function (success: boolean, data: any) { })
+        }
     }
 })
 </script>
@@ -40,7 +37,7 @@ export default defineComponent({
     <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ appStore.profile?.name }}</span>
             <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
         </a>
         <!-- Dropdown - User Information -->

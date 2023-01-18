@@ -12,6 +12,7 @@ export const appStore = defineStore('appState', {
 
     error: undefined,
     loading: false,
+    profile: undefined,
 
     authToken: localStorage.getItem(config.authToken),
   }),
@@ -84,13 +85,14 @@ export const appStore = defineStore('appState', {
         });
     },
 
-    profile(cb: (success: boolean, data: any) => void) {
+    getProfile(cb: (success: boolean, data: any) => void) {
       this.loading = true;
       delete this.error;
 
       axios
         .get(config.APIURL + 'profile', { headers: APIMethods.getHeaders() })
         .then(data => {
+          this.profile = data.data;
           cb(true, data.data);
         })
         .catch(err => cb(false, err?.response?.data))
