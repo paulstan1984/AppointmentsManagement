@@ -10,8 +10,6 @@ import EditServiceProvider from '@/components/modals/EditServiceProvider.vue';
 
 /**
  * Todo:
- * map between users and providers / admin -> this can be done at the database level
- * handle error: 401, 403: logout and redirect to login
  * public app: make reservation
  * admin app: approve or cancel reservation
  * admin app: search rezervation
